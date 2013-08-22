@@ -28,4 +28,10 @@ Tornado内置了csrf攻击保护。只需要在初始化Application对象的时�
 
 可以override RequestHandler.check_xsrf_cookie函数来个性化XSRF防范的行为。如果不需要这个行为，那么override其为空即可。
 
+# Static Files
+
+静态资源设置可以在构造Application的settings的时候传入static_path来指定静态资源访问的路径。使用了这个配置之后所有的对static_path的访问都会转换为对该静态资源文件夹的静态文件访问。并且Tornado会自动的将/favicon.ico以及/robots.txt都自动转换到该static_path下访问，即使对这些资源的访问没有使用static_path的前缀。
+
+而且可以使用StaticFileHandler来作为静态资源访问的处理器。如果访问路径很长的话可以减短了访问的路径。
+
 

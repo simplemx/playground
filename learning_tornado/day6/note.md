@@ -6,13 +6,13 @@ UI Module也就是界面上的组件，方便组件重用。
 
 其实还UI Module还可以直接通过模板来引入，在模板里调用set_resources函数。
 
->{{ set_resources(embedded_css=".entry { margin-bottom: 1em; }") }}
+    {{ set_resources(embedded_css=".entry { margin-bottom: 1em; }") }}
 
 这个效果和在Entry内重写embedded_css是一样的。
 
 然后在引入module的地方调用如下：
 
->{% module Template("module-entry.html", show_comments=True) %}
+    {% module Template("module-entry.html", show_comments=True) %}
 
 也就是可以通过传入模板路径名来构造UI Module的子类，减少编写代码。
 

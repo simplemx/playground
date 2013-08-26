@@ -22,3 +22,10 @@
 
 这块还有好多更需挖掘的。
 
+# Asynchronous HTTP clients
+
+tornado包括两种非阻塞http client：SimpleAsyncHTTPClient/CurlAsyncHTTPClient。SimpleAsyncHTTPClient是实现在torado 的IOLoop之上，没有其他依赖，而CurlAsyncHTTPClient是实现在libcurl和pycurl之上的，使用它需要安装这些第三方包。
+
+默认的是SimpleAsyncHTTPClient。
+
+

@@ -28,4 +28,14 @@ tornado包括两种非阻塞http client：SimpleAsyncHTTPClient/CurlAsyncHTTPCli
 
 默认的是SimpleAsyncHTTPClient。
 
+# Debug mode
+
+在构造Appliation的时候传入debug=True，那么tornado会运行在debug mode之下。
+
+在debug mode之下，tornado会源码是否有改变并且自动重新加载，这样可以避免重启服务。不过如果语法错误等有可能会造成应用crash down。
+
+在debug mode之下，templates将不会被缓存，使用static_url的静态资源也不会进行hash。
+
+在debug mode之下，如果抛错了，那么包含错误栈信息的内容的页面将会输出到response。
+
 

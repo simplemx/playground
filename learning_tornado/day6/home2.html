@@ -4,8 +4,9 @@
     </head>
     <body>
 {% for entry in entries %}
-  {% module Entry(entry) %}
+{% module Template("module-entry2.html", entry=entry, show_comments=True) %}
   {% end %}
   </body>
   </html>
+
 

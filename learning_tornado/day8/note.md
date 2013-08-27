@@ -18,3 +18,9 @@ autoreload是可以作为一个单独的模块来使用的tornado.autoreload。
     wsgiref.handlers.CGIHandler().run(application)
 
 
+# Thread-safety notes
+
+RequestHandler里的函数以及Tornado里的其他函数都不是线程安全的，尤其是write、finish、flush函数，必须是在主线程内被调用。所以如果使用多线程的时候，记得使用IOLoop.add_callback来将控制流交回到主线程来结束request。
+
+
+

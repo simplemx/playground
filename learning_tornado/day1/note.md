@@ -1,42 +1,41 @@
-
 # Helloworld
 
 首先是Hello World。
 
->import tornado.ioloop
->import tornado.web
->class MainHandler(tornado.web.RequestHandler):
->    def get(self):
->        self.write("Hello, world")
->application = tornado.web.Application([
->    (r"/", MainHandler),
->])
->if __name__ == "__main__":
->    application.listen(8888)
->    tornado.ioloop.IOLoop.instance().start()
+    import tornado.ioloop
+    import tornado.web
+    class MainHandler(tornado.web.RequestHandler):
+        def get(self):
+            self.write("Hello, world")
+    application = tornado.web.Application([
+        (r"/", MainHandler),
+    ])
+    if __name__ == "__main__":
+        application.listen(8888)
+        tornado.ioloop.IOLoop.instance().start()
 
 这个程序太简单了，都不知道有什么好说。
 
 路由URL设置那里可以设置为正则表达式，正则的值会传入到RequestHandler的处理函数中。
 
->class StoryHandler(tornado.web.RequestHandler):
-    def get(self, story_id):
-        self.write("You requested the story " + story_id)
-application = tornado.web.Application([
-    (r"/story/([0-9]+)", StoryHandler),
-])
+    class StoryHandler(tornado.web.RequestHandler):
+        def get(self, story_id):
+            self.write("You requested the story " + story_id)
+    application = tornado.web.Application([
+        (r"/story/([0-9]+)", StoryHandler),
+    ])
 
 而获取请求参数的是调用RequestHandler.get_argument函数。
 
->class MyFormHandler(tornado.web.RequestHandler):
->    def get(self):
->        self.write('<html><body><form action="/myform" method="post">'
->                   '<input type="text" name="message">'
->                   '<input type="submit" value="Submit">'
->                   '</form></body></html>')
->    def post(self):
->        self.set_header("Content-Type", "text/plain")
->        self.write("You wrote " + self.get_argument("message"))
+    class MyFormHandler(tornado.web.RequestHandler):
+        def get(self):
+            self.write('<html><body><form action="/myform" method="post">'
+                       '<input type="text" name="message">'
+                       '<input type="submit" value="Submit">'
+                       '</form></body></html>')
+        def post(self):
+            self.set_header("Content-Type", "text/plain")
+            self.write("You wrote " + self.get_argument("message"))
 
 这里有个注意点，如果没有传入请求参数，然后调用self.get_argument的时候会抛错400,这里需要做异常处理。
 

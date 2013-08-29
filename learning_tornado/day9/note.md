@@ -73,3 +73,21 @@ RequestHandler.send_error(status_code=500, **kwargs) 发送一个错误码到浏
 RequestHandler.write_error(status_code, **kwargs) 个性化错误页面。
 
 RequestHandler.clear() 清除返回里的所有header和内容。
+
+## cookies
+
+RequestHandler.cookies 引用请求对象里的cookies对象。
+
+RequestHandler.get_cookie(name, default=None) 返回cookies里的name的值。
+
+RequestHandler.set_cookie(name, value, domain=None, expres=None, path='/', expires_days=None, **kwargs) 设置cookies的name value对。
+
+RequestHandler.clear_cookie(name, path='/', domain=None) 清除cookie。
+
+RequestHandler.clear_all_cookies() 清除这个请求相关的所有cookie。
+
+RequestHandler.get_secure_cookie(name, value=None, max_age_days=31) 返回加密了的cookie。
+
+RequestHandler.set_secure_cookie(name, value, expires_days=30, **kwargs) 设置安全的cookie。
+
+RequestHandler.create_signed_value(name, value) 为namevalue对加密。大多数是给set_secure_cookie函数来使用。

@@ -1,0 +1,87 @@
+@charset "utf-8";
+
+*{
+	margin : 0px;
+	padding : 0px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/** 设置默认字体 **/
+body, button, input, select, textarea /* for ie */ {
+    font: 12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 { font-size: 100%; }
+/*#F7F7F7;*/
+body {
+	font-size : 13px;
+    color : grey;
+	background-color : lightblue;
+}
+
+ul{
+	list-style : none;
+}
+
+h2 {
+	font-size : 20px;
+}
+
+h3 {
+	font-size : 20px;
+}
+
+a{
+	text-decoration : none;
+}
+
+p {
+    font-size: 14px;
+    margin: 0 0 20px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 180%;
+}
+
+.container{
+    padding : 0 10px 0 10px;
+    width : 800px;
+    margin : 0 auto;
+    height : 100%;
+    min-height : 600px;
+    background-color : white;
+}
+
+#header{
+    width : 100%;
+    min-height : 150px;
+}
+
+#header>.user_bar{
+    width : 100%;
+    text-align : right;
+}
+
+#header>h1{
+    text-align : center;
+    font-size : 32px;
+}
+
+#header>.nav{
+    overflow : hidden;
+    width : 100%;
+    border-bottom : 1px solid lightblue;
+}
+
+#header>.nav>li{
+    float : left;
+    margin-right : 10px;
+}
+
+#content {
+    width : 100%;
+    min-height : 500px;
+}
+#footer{
+    width : 100%;
+    border-top : 1px solid lightblue;
+}

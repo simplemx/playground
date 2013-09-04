@@ -12,7 +12,12 @@
                         <span>Please <a href="/login">login</a></span>
                     {% end %}
                     {% if current_user is not None %}
-                        <span><a href="/logout">logout</a></span>
+                        <span>
+                            <form id="logout_form" action="/logout" method="post">
+                                {% module xsrf_form_html() %}
+                            </form>
+                            <a href="" onclick="javascript:document.getElementById('logout_form').submit();return false;">logout</a>
+                        </span>
                     {% end %}
                 </div> 
                 <h1>StartUp</h1>

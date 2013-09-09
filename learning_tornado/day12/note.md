@@ -33,3 +33,36 @@
 StaticFileHandler构造的时候需要传入path参数来确定静态文件的路径。
 
 这个类只适用于访问量少的文件服务，如果文件访问量大，那么使用apache或者nginx。
+
+# HTTP Server
+
+## tornado.httpserver.HTTPServer(request_callback, no_keep_alive=False, io_loop=None, xheaders=False, ssl_options=None, protocal=None, **kwargs)
+
+这个服务由一个请求处理实例来完成对请求的处理，这个处理函数入参是request，并且将response通过request.write来写入，然后调用request.finish来完成这个请求。当然，如果是keep-alive的请求的时候这个请求事实上是不会被关闭的。
+
+HTTPServer初始化的时候可以使用三种方式：
+
+1.listen简单单进程模式
+
+    server = HTTPServer(app)
+    server.listen(8888)
+    IOLoop.instance().start()
+
+另外还可以使用tornado.web.Application.listen来代替上述的代码。
+
+2.bind/start简单的多进程模式
+
+    server = HTTPServer(app)
+    server.bind(8888)
+    server.start(0)
+    IOLoop.instance().start()
+
+3.add_sockets高级的多进程模式
+
+    sockets = tornado.netutil.bind_sockets(8888)
+    tornado.process.fork_processes(0)
+    server = HTTPServer(app)
+    server.add_sockets(sockets)
+    IOLoop.instance().start()
+
+

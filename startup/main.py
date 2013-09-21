@@ -2,9 +2,37 @@ import tornado.ioloop
 import tornado.web
 import os
 
-class IndexHandler(tornado.web.RequestHandler):
+class BaseBackendHandler(tornado.web.RequestHandler):
+    def get_login_url(self):
+        return "/backendlogin"
+    def get_current_user(self):
+        return self.get_secure_cookie("backend_user")
+
+class BaseFrontendHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie("user")
+
+class BackendLoginHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("template/backend/login.html")
+    def post(self):
+        "post login form"
+        name = self.get_argument("name")
+        password = self.get_argument("password")
+        self.set_secure_cookie("backend_user", name)
+        self.redirect("/backend")
+
+class BackendLogoutHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.clear_cookie("backend_user")
+        self.redirect("/backend")
+
+class BackendHandler(BaseBackendHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render("template/backend/index.html")
+
+class IndexHandler(BaseFrontendHandler):
     def get(self):
         self.render("template/index.html")
 
@@ -35,6 +63,9 @@ application = tornado.web.Application([
     (r"/login", LoginHandler),
     (r"/doLogin", LoginHandler),
     (r"/logout", LogoutHandler),
+    (r"/backend", BackendHandler),
+    (r"/backendlogin", BackendLoginHandler),
+    (r"/backendlogout", BackendLogoutHandler),
 ], **settings)
 
 if __name__ == "__main__":

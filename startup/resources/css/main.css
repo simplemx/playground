@@ -93,3 +93,50 @@ p {
     min-height : 19px;
     border-top : 1px solid lightblue;
 }
+
+.warn_info {
+    color : red;
+}
+
+.unactive{
+    color : grey;
+}
+
+
+/* login relative styles */
+#login_area{
+    width : 400px;
+    padding-top : 200px;
+    margin : 0 auto;
+    text-align : center;
+}
+
+#login_area>h1{
+    font-size : 30px;
+}
+
+#login_form{
+    margin-top : 50px;
+    width : 100%;
+    text-align : center;
+}
+
+#login_form td{
+    height : 30px;
+    line-height : 30px;
+}
+
+#login_form label{
+    width : 50px;
+}
+
+#login_form input{
+    width : 200px;
+}
+
+#login_submit{
+    width : 250px;
+    height : 25px;
+    line-height : 25px;
+}
+

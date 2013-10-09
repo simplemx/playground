@@ -23,7 +23,7 @@ class BackendLoginHandler(tornado.web.RequestHandler):
         self.redirect("/backend")
 
 class BackendLogoutHandler(tornado.web.RequestHandler):
-    def get(self):
+    def post(self):
         self.clear_cookie("backend_user")
         self.redirect("/backend")
 

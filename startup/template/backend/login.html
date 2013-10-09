@@ -19,7 +19,7 @@
                                 <input id="name" type="text" class="unactive" name="name" value="请输入用户名"/>
                             </td>
                             <td>
-                                <span class="warn_info">*</span>
+                                <span id="name_warn" class="warn_info">*</span>
                             </td>
                         </tr>
                         <tr>
@@ -27,10 +27,10 @@
                                 <label for="password">密码:</label>
                             </td>
                             <td>
-                                <input type="password" class="unactive" name="password" value="">
+                                <input id= "password" type="password" class="unactive" name="password" value="">
                             </td>
                             <td>
-                                <span class="warn_info">*</span>
+                                <span id="pwd_warn" class="warn_info">*</span>
                             </td>
                         </tr>
                     </table>
@@ -61,7 +61,20 @@
                     };
 
                     $("#name").change(name_change);
-
+                    
+                    $("#login_submit").click(function(){
+                        var name = $("#name").val();
+                        var pwd = $("#password").val();
+                        if (!name || name === "" || name === "请输入用户名") {
+                            $("#name_warn").text("请输入用户名");
+                            return false;
+                        }
+                        if (!pwd || pwd === "" ) {
+                            $("#pwd_warn").text("请输入密码");
+                            return false;
+                        }
+                        return true;
+                    });
             }); 
         </script>
     </body>

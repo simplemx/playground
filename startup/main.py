@@ -19,7 +19,7 @@ class BackendLoginHandler(tornado.web.RequestHandler):
         "post login form"
         name = self.get_argument("name")
         password = self.get_argument("password")
-        self.set_secure_cookie("backend_user", name)
+        self.set_secure_cookie("backend_user", name, expires_days=1)
         self.redirect("/backend")
 
 class BackendLogoutHandler(tornado.web.RequestHandler):
@@ -48,7 +48,7 @@ class LoginHandler(tornado.web.RequestHandler):
         "post login form"
         name = self.get_argument("name")
         password = self.get_argument("password")
-        self.set_secure_cookie("user", name)
+        self.set_secure_cookie("user", name, expires_days = 1)
         self.redirect("/")
 
 settings = {

@@ -1,24 +1,49 @@
 import tornado.ioloop
 import tornado.web
 import os
+import MySQLdb
+from DBUtils.PersistentDB import PersistentDB
 
-class BaseBackendHandler(tornado.web.RequestHandler):
+## DB pool
+
+dbpool = PersistentDB(creator=MySQLdb, maxusage=1000, host='127.0.0.1', user='root', passwd='', port=3306, db='startup')
+
+##BASE Handler
+class BaseHandler(tornado.web.RequestHandler):
+    def select(self, sql):
+        conn = dbpool.connection()
+        cur = conn.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute(sql)
+        result = cur.fetchall()
+        cur.close()
+        conn.close()
+        return result
+
+class BaseBackendHandler(BaseHandler):
     def get_login_url(self):
         return "/backendlogin"
     def get_current_user(self):
         return self.get_secure_cookie("backend_user")
 
-class BaseFrontendHandler(tornado.web.RequestHandler):
+class BaseFrontendHandler(BaseHandler):
     def get_current_user(self):
         return self.get_secure_cookie("user")
 
-class BackendLoginHandler(tornado.web.RequestHandler):
+
+##Backend Handler begin
+
+class BackendLoginHandler(BaseBackendHandler):
     def get(self):
         self.render("template/backend/login.html")
     def post(self):
         "post login form"
         name = self.get_argument("name")
         password = self.get_argument("password")
+        "query from db and judge info security"
+        admin_info = self.select("select password from st_admin where admin_name='" + name + "'")
+        if not admin_info or not admin_info[0]["password"] or admin_info[0]["password"] != password:
+            self.send_error(status_code=401) 
+            return
         self.set_secure_cookie("backend_user", name, expires_days=1)
         self.redirect("/backend")
 
@@ -31,6 +56,13 @@ class BackendHandler(BaseBackendHandler):
     @tornado.web.authenticated
     def get(self):
         self.render("template/backend/index.html")
+
+class BackendMenuHandler(BaseBackendHandler):
+    def get(self):
+        self.render("template/backend/menu.html")
+
+
+##Frontend Handler begin
 
 class IndexHandler(BaseFrontendHandler):
     def get(self):
@@ -66,6 +98,7 @@ application = tornado.web.Application([
     (r"/backend", BackendHandler),
     (r"/backendlogin", BackendLoginHandler),
     (r"/backendlogout", BackendLogoutHandler),
+    (r"/backendmenu", BackendMenuHandler),
 ], **settings)
 
 if __name__ == "__main__":

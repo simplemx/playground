@@ -1,3 +1,4 @@
+#encoding=utf-8
 import tornado.ioloop
 import tornado.web
 import os
@@ -6,7 +7,7 @@ from DBUtils.PersistentDB import PersistentDB
 
 ## DB pool
 
-dbpool = PersistentDB(creator=MySQLdb, maxusage=1000, host='127.0.0.1', user='root', passwd='', port=3306, db='startup')
+dbpool = PersistentDB(creator=MySQLdb, maxusage=1000, host='127.0.0.1', user='root', passwd='', port=3306, db='startup', charset='utf8')
 
 ##BASE Handler
 class BaseHandler(tornado.web.RequestHandler):
@@ -40,7 +41,7 @@ class BackendLoginHandler(BaseBackendHandler):
         name = self.get_argument("name")
         password = self.get_argument("password")
         "query from db and judge info security"
-        admin_info = self.select("select password from st_admin where admin_name='" + name + "'")
+        admin_info = self.select("select password from st_admin where admin_name='%s'" % name )
         if not admin_info or not admin_info[0]["password"] or admin_info[0]["password"] != password:
             self.send_error(status_code=401) 
             return
@@ -58,8 +59,10 @@ class BackendHandler(BaseBackendHandler):
         self.render("template/backend/index.html")
 
 class BackendMenuHandler(BaseBackendHandler):
+    @tornado.web.authenticated
     def get(self):
-        self.render("template/backend/menu.html")
+        menus = self.select("select menu_id,menu_name,parent_id,url,sort from st_menu")
+        self.render("template/backend/menu.html", menus = menus)
 
 
 ##Frontend Handler begin

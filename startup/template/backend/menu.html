@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <title>Startup Menu</title>
+        <link rel="shortcut icon" href="{{static_url("favicon.ico")}}" type="images/x-icon"/>
+        <link rel="Stylesheet" href="{{static_url("css/main.css")}}" type="text/css"/> 
+        <link rel="stylesheet" href="{{static_url("css/zTreeStyle.css")}}" type="text/css"/>
+    </head>
+    <body>
+        <div class="container">
+            <div id="header">
+                <div class="user_bar">
+                    {% if current_user is None %}
+                        <span>Please <a href="/backendlogin">login</a></span>
+                    {% end %}
+                    {% if current_user is not None %}
+                        <span>
+                            <form id="logout_form" action="/backendlogout" method="post">
+                                {% module xsrf_form_html() %}
+                            </form>
+                            {{current_user}}
+                            <a href="" onclick="javascript:document.getElementById('logout_form').submit();return false;">logout</a>
+                        </span>
+                    {% end %}
+                </div> 
+                <h1>Startup Manager</h1>
+                <ul class="nav">
+                    <li>
+                        <a href="#">首页</a>
+                    </li>
+                    <li>
+                        <a href="#">用户管理</a>
+                        <ul class="sub_nav">
+                            <li><a href="">添加用户</a></li>
+                            <li><a href="">修改密码</a></li>
+                            <li><a href="">用户信息修改</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">权限管理</a>
+                        <ul class="sub_nav">
+                            <li><a href="">添加权限</a></li>
+                            <li><a href="">用户权限管理</a></li>
+                            <li><a href="">添加约束</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">菜单管理</a>
+                        <ul class="sub_nav">
+                            <li><a href="/backendmenu">添加菜单</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="content">
+                <div id="left_panel">
+                    <ul id="menu_tree" class="ztree">
+                    </ul>
+                </div>
+                <div id="right_panel">
+                    <form id="menu_form" action="">
+                        {% %}         
+                    </form>  
+                </div>
+            </div>
+            <div id="footer">
+                <h6>designed by simplemx, powered by tornado</h6>
+            </div> 
+        </div>
+        <script type="text/javascript" src="{{static_url("js/jquery-1.7.2.min.js")}}"></script>
+        <script type="text/javascript" src="{{static_url("js/jquery.ztree.core-3.5.min.js")}}"></script>
+        <script type="text/javascript">
+var setting = {
+    data: {
+        key : {
+            name : "menu_name"
+        },
+		simpleData: {
+		    enable: true,
+            idKey : "menu_id",
+            pIdKey : "parent_id",
+            rootPId : null
+		}
+				
+	}
+			
+};
+var zNodes ={% raw json_encode(menus)%};
+
+$(document).ready(function(){
+	$.fn.zTree.init($("#menu_tree"), setting, zNodes);
+});
+            
+        </script>
+    </body>
+</html>
+
+

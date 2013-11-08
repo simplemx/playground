@@ -19,6 +19,13 @@ class BaseHandler(tornado.web.RequestHandler):
         cur.close()
         conn.close()
         return result
+    def delete(self, sql):
+        conn = dbpool.connection()
+        cur = conn.cursor()
+        cur.execute(sql)
+        cur.close()
+        conn.close()
+        return True
 
 class BaseBackendHandler(BaseHandler):
     def get_login_url(self):
@@ -59,10 +66,27 @@ class BackendHandler(BaseBackendHandler):
         self.render("template/backend/index.html")
 
 class BackendMenuHandler(BaseBackendHandler):
+    def select_menu(self):
+        return self.select("select menu_id,menu_name,parent_id,url,sort from st_menu")
     @tornado.web.authenticated
     def get(self):
-        menus = self.select("select menu_id,menu_name,parent_id,url,sort from st_menu")
+        menus = self.select_menu()
         self.render("template/backend/menu.html", menus = menus)
+    @tornado.web.authenticated
+    def post(self):
+        mode = self.get_argument("mode")
+        msg = "提交成功"
+        if mode == 1 :
+            "edit"
+        elif mode == 2 :
+            "add"
+        elif mode == 3 :
+            "delete"
+            menu_id = self.get_argument("menu_id")
+            self.delete("delete st_menu st where st.menu_id=%s" % menu_id)
+        menus = self.select_menu()
+        self.render("template/backend/menu.html", menus = menus, msg = msg)
+        
 
 
 ##Frontend Handler begin

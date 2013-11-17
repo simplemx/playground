@@ -19,11 +19,12 @@ class BaseHandler(tornado.web.RequestHandler):
         cur.close()
         conn.close()
         return result
-    def delete(self, sql):
+    def update(self, sql):
         conn = dbpool.connection()
         cur = conn.cursor()
         cur.execute(sql)
         cur.close()
+        conn.commit()
         conn.close()
         return True
 
@@ -76,18 +77,49 @@ class BackendMenuHandler(BaseBackendHandler):
     def post(self):
         mode = self.get_argument("mode")
         msg = "提交成功"
-        if mode == 1 :
+        menu_id = self.get_argument("menu_id")
+        if mode == "1" :
             "edit"
-        elif mode == 2 :
+            menu_name = self.get_argument("menu_name")
+            url = self.get_argument("url","")
+            parent_id = self.get_argument("parent_id","")
+            sql = "update st_menu set menu_name='%s',url='%s',parent_id='%s' where menu_id='%s'" % (menu_name,url,parent_id,menu_id)
+        elif mode == "2" :
             "add"
-        elif mode == 3 :
+            menu_name = self.get_argument("menu_name")
+            parent_id = self.get_argument("parent_id","")
+            url = self.get_argument("url","")
+            sql = "insert into st_menu (menu_id,menu_name,parent_id,url) values('%s','%s','%s','%s')" % (menu_id,menu_name,parent_id,url)
+        elif mode == "3" :
             "delete"
-            menu_id = self.get_argument("menu_id")
-            self.delete("delete st_menu st where st.menu_id=%s" % menu_id)
+            sql = "delete from st_menu where menu_id='%s'" % menu_id
+        self.update(sql)
         menus = self.select_menu()
-        self.render("template/backend/menu.html", menus = menus, msg = msg)
-        
+        self.render("template/backend/msg.html", msg = msg)
 
+class BackendUserHandler(BaseBackendHandler):
+    def select_all_user(self):
+        return self.select("select user_id,user_name,signature,create_time from st_user")
+    def get(self):
+        users = self.select_all_user()
+        self.render("template/backend/user.html", users = users)
+
+class BackendAdminPwdHandler(BaseBackendHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render("template/backend/admin_pwd.html")
+    def post(self):
+        msg = "修改成功"
+        old_pwd = self.get_argument("old_pwd")
+        password = self.get_argument("password")
+        admin = self.get_current_user()
+        admin_info = self.select("select password from st_admin where admin_name='%s'" % admin)
+        print admin_info
+        if old_pwd != admin_info[0]["password"] :
+            msg = "输入的旧密码错误，请检查"
+        else :
+            self.update("update st_admin set password='%s' where admin_name='%s'" %(password, admin))
+        self.render("template/backend/msg.html", msg = msg)
 
 ##Frontend Handler begin
 
@@ -126,6 +158,7 @@ application = tornado.web.Application([
     (r"/backendlogin", BackendLoginHandler),
     (r"/backendlogout", BackendLogoutHandler),
     (r"/backendmenu", BackendMenuHandler),
+    (r"/adminpwd", BackendAdminPwdHandler),
 ], **settings)
 
 if __name__ == "__main__":

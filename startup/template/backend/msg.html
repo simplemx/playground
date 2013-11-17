@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Startup Manager</title>
+        <title>修改密码</title>
         <link rel="shortcut icon" href="{{static_url("favicon.ico")}}" type="images/x-icon"/>
         <link rel="Stylesheet" href="{{static_url("css/main.css")}}" type="text/css"/> 
     </head>
@@ -24,7 +24,7 @@
                 <h1>Startup Manager</h1>
                 <ul class="nav">
                     <li>
-                        <a href="/backend" id="nav_current">首页</a>
+                        <a href="/backend">首页</a>
                     </li>
                     <li>
                         <a href="#">用户管理</a>
@@ -51,6 +51,7 @@
                 </ul>
             </div>
             <div id="content">
+                <h1 class="msg">{{msg}}</h1>
             </div>
             <div id="footer">
                 <h6>designed by simplemx, powered by tornado</h6>
@@ -58,4 +59,6 @@
         </div>
     </body>
 </html>
+
+
 

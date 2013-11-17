@@ -25,7 +25,7 @@
                 <h1>Startup Manager</h1>
                 <ul class="nav">
                     <li>
-                        <a href="#">首页</a>
+                        <a href="/backend">首页</a>
                     </li>
                     <li>
                         <a href="#">用户管理</a>
@@ -44,10 +44,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#">菜单管理</a>
-                        <ul class="sub_nav">
-                            <li><a href="/backendmenu">添加菜单</a></li>
-                        </ul>
+                        <a href="/backendmenu" id="nav_current">菜单管理</a>
                     </li>
                 </ul>
             </div>
@@ -57,7 +54,7 @@
                     </ul>
                 </div>
                 <div class="main_panel">
-                    <form id="menu_form" type="post" action="/backendmenu">
+                    <form id="menu_form" method="post" action="/backendmenu">
                         {% module xsrf_form_html() %}
                         <input type="hidden" id="mode" name="mode" value ="2" />      
                             <table class="form_fields">
@@ -104,6 +101,18 @@ var deleteMenu = function(){
     if ($("#mode").val() === ADD) {
         alert("请选择菜单");
     } else if (window.confirm("是否删除" + $("#menu_name").val() + "?")) {
+        //check whether exists sub menu
+        var is_exists_submenu = false;
+        $.each(zNodes, function(index, obj){
+            if (obj.parent_id == $("#menu_id").val()) {
+                is_exists_submenu = true; 
+                return false;
+            }
+        });
+        if (is_exists_submenu) {
+            alert("请删除所有子菜单后再进行删除");
+            return false;
+        }
         $("#mode").val(DELE);  
         $("#menu_form").submit();
     }
@@ -149,6 +158,12 @@ var zNodes ={% raw json_encode(menus)%};
 
 $(document).ready(function(){
 	$.fn.zTree.init($("#menu_tree"), setting, zNodes);
+    //bind form onsubmit
+    $("#menu_form").on("submit", function(){
+            //enable disable fields
+            $("#menu_id").prop("disabled", false);  
+            return true;
+        })
 });
             
         </script>

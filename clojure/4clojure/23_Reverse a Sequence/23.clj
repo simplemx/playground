@@ -1,11 +1,10 @@
-(fn t[l] (
-        if (empty? l) 
+(defn t[l] (
+        if (= 1 (count l)) 
         l
-        (flatten (
-                list 
+        (
+                concat 
                 (t (rest l)) 
-                (first l)   
-         )
+                (list (first l))   
         ) 
     )
 )

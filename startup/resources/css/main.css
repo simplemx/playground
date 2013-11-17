@@ -111,6 +111,11 @@ input {
     text-align : center;
 }
 
+#nav_current {
+    color : lightblue;
+    font-weight : bold;
+}
+
 #header>.nav>a:hover>.sub_nav{
     display : block;
 }
@@ -196,4 +201,6 @@ input {
 .btn_area {
     text-align : center;
 }
-
+.msg {
+    color : red;
+}

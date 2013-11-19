@@ -159,7 +159,6 @@ application = tornado.web.Application([
     (r"/backendlogout", BackendLogoutHandler),
     (r"/backendmenu", BackendMenuHandler),
     (r"/adminpwd", BackendAdminPwdHandler),
-    (r"/backenduser", BackendUserHandler),
 ], **settings)
 
 if __name__ == "__main__":

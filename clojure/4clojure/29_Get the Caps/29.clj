@@ -1,10 +1,14 @@
-(defn t [str] (
-    let [l (vec str) caps (vec "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+(defn v [s] (
+
+apply str ( (fn [s] (
+    let [l (vec s) caps (vec "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     ]
-    (str (map char (filter (
+    (filter (
             fn [x] (
                 > (count (filter (fn [y] (= x y)) caps)) 0
             )
-        ) l))
-    )
-))
+        ) l)
+    
+)) s))
+
+)

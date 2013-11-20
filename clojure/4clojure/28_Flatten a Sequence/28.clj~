@@ -4,7 +4,7 @@
         (t (list (first l)))
         (if (= (type ()) (type (first l)))
             (t (list (first l)))
-            (list (first l))
+            (first l)
         )
     )
     (if (= (type []) (type l))

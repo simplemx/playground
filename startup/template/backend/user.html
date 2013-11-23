@@ -65,13 +65,15 @@
                         <td>{{user["user_name"]}}</td>
                         <td>{{user["signature"]}}</td>
                         <td>{{user["create_time"]}}</td>
-                        <td><input type="button" class="modify_btn" value="修改"/></td>
+                        <td><input type="button" class="modify_btn" value="选择修改"/><input type="button" class="add_btn" value="新增会员" /><input class="delete_btn" type="button" value="删除会员"/>
+</td>
                     </tr>
                     {% end %}
                 </table>
                 <form method="post" action="/backenduser" id="user_form">
                     {% module xsrf_form_html() %}
                     <input type="hidden" name="user_id" value=""/>
+                    <input type="hidden" name="mode" value="0"/>
                     <table class="form_fields">
                         <tr>
                             <th colspan="2">会员信息</th>
@@ -104,13 +106,20 @@
                         $("#user_form [name=user_name]").val($(tds[1]).text());
                         $("#user_form [name=signature]").val($(tds[2]).text());
                         $("#user_form [name=user_id]").val($(tds[0]).text());
+                        $("#user_form [name=mode]").val("1");
                     });
                     $("#submit_btn").on("click", function(){
-                        if ($("#user_form [name=user_id]").val() !== ""){
-                            $("#user_form").submit();
-                        } else {
-                            alert("请选择用户进行修改");
-                        }
+                        $("#user_form").submit();
+                    });
+                    $(".delete_btn").on("click", function(){
+                        var tds = $(this).parent().parent().children();
+                        $("#user_form [name=user_id]").val($(tds[0]).text());
+                        $("#user_form [name=mode]").val("2");
+                        $("#user_form").submit();
+                    });
+                    $(".add_btn").on("click", function(){
+                        $("#user_form [name=user_id]").val("");
+                        $("#user_form [name=mode]").val("0");
                     });
             });    
         </script>

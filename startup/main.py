@@ -106,11 +106,20 @@ class BackendUserHandler(BaseBackendHandler):
         self.render("template/backend/user.html", users = users)
     @tornado.web.authenticated
     def post(self):
-        msg = "修改成功"
-        user_id = self.get_argument("user_id")
-        user_name = self.get_argument("user_name")
-        signature = self.get_argument("signature")
-        self.update("update st_user set user_name='%s',signature='%s' where user_id=%s" % (user_name, signature, user_id))
+        msg = "操作成功"
+        mode = self.get_argument("mode")
+        user_id = self.get_argument("user_id", "")
+        user_name = self.get_argument("user_name", "")
+        signature = self.get_argument("signature", "")
+        if "0" == mode :
+            "add"
+            self.update("insert into st_user(user_name,signature,create_time) values('%s','%s',now()) " % (user_name, signature))
+        elif "1" == mode :
+            "modify"
+            self.update("update st_user set user_name='%s',signature='%s' where user_id=%s" % (user_name, signature, user_id))
+        else :
+            "delete"
+            self.update("delete from st_user where user_id='%s'" % user_id)
         self.render("template/backend/msg.html", msg = msg)
 
 class BackendAdminPwdHandler(BaseBackendHandler):

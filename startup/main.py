@@ -100,21 +100,30 @@ class BackendMenuHandler(BaseBackendHandler):
 class BackendUserHandler(BaseBackendHandler):
     def select_all_user(self):
         return self.select("select user_id,user_name,signature,create_time from st_user")
+    @tornado.web.authenticated
     def get(self):
         users = self.select_all_user()
         self.render("template/backend/user.html", users = users)
+    @tornado.web.authenticated
+    def post(self):
+        msg = "修改成功"
+        user_id = self.get_argument("user_id")
+        user_name = self.get_argument("user_name")
+        signature = self.get_argument("signature")
+        self.update("update st_user set user_name='%s',signature='%s' where user_id=%s" % (user_name, signature, user_id))
+        self.render("template/backend/msg.html", msg = msg)
 
 class BackendAdminPwdHandler(BaseBackendHandler):
     @tornado.web.authenticated
     def get(self):
         self.render("template/backend/admin_pwd.html")
+    @tornado.web.authenticated
     def post(self):
         msg = "修改成功"
         old_pwd = self.get_argument("old_pwd")
         password = self.get_argument("password")
         admin = self.get_current_user()
         admin_info = self.select("select password from st_admin where admin_name='%s'" % admin)
-        print admin_info
         if old_pwd != admin_info[0]["password"] :
             msg = "输入的旧密码错误，请检查"
         else :

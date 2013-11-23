@@ -53,36 +53,67 @@
             <div id="content">
                 <table class="data_table">
                     <tr>
+                        <th>ID</th>
                         <th>名称</th>
                         <th>签名</th>
                         <th>新建时间</th>
+                        <th>操作</th>
                     </tr>
+                    {% for user in users %}
                     <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
+                        <td>{{user["user_id"]}}</td>
+                        <td>{{user["user_name"]}}</td>
+                        <td>{{user["signature"]}}</td>
+                        <td>{{user["create_time"]}}</td>
+                        <td><input type="button" class="modify_btn" value="修改"/></td>
                     </tr>
-                    <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                    </tr>
-                    <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                    </tr>
-                    <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                    </tr>
+                    {% end %}
                 </table>
+                <form method="post" action="/backenduser" id="user_form">
+                    {% module xsrf_form_html() %}
+                    <input type="hidden" name="user_id" value=""/>
+                    <table class="form_fields">
+                        <tr>
+                            <th colspan="2">会员信息</th>
+                        </tr>
+                        <tr>
+                            <td>名称</td>
+                            <td><input type="text" name="user_name" /></td>
+                        </tr>
+                        <tr>
+                            <td>签名</td>
+                            <td><input type="text" name="signature" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="btn_area">
+                                <input id="submit_btn" type="button" value="提交" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
             </div>
             <div id="footer">
                 <h6>designed by simplemx, powered by tornado</h6>
             </div> 
         </div>
+        <script type="text/javascript" src="{{static_url("js/jquery-1.7.2.min.js")}}"></script>
+        <script type="text/javascript">
+            $(function(){
+                    $(".modify_btn").on("click", function(){
+                        var tds = $(this).parent().parent().children();
+                        $("#user_form [name=user_name]").val($(tds[1]).text());
+                        $("#user_form [name=signature]").val($(tds[2]).text());
+                        $("#user_form [name=user_id]").val($(tds[0]).text());
+                    });
+                    $("#submit_btn").on("click", function(){
+                        if ($("#user_form [name=user_id]").val() !== ""){
+                            $("#user_form").submit();
+                        } else {
+                            alert("请选择用户进行修改");
+                        }
+                    });
+            });    
+        </script>
     </body>
 </html>
 

@@ -219,3 +219,6 @@ input {
     padding-left : 5px;
     border : 1px solid lightblue;
 }
+.hidden {
+    display : hidden;
+}

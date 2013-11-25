@@ -157,6 +157,8 @@ class BackendResourceHandler(BaseBackendHandler):
                 f = open(("resources/user/%s" % self.request.files["file"][0]["filename"]) , "wb")
                 f.write(self.request.files["file"][0]["body"])
                 f.close()
+                admin_info = self.select("select admin_id from st_admin where admin_name='%s'" % self.get_current_user())
+                self.update(("insert into st_resource (name,url,upload_time,upload_admin_id) values('%s','%s',now(),%s)" % (name, ("user/%s" %  self.request.files["file"][0]["filename"]), admin_info[0]["admin_id"])))
             else:
                 self.send_error(status_code=400)
         elif mode == "2" :

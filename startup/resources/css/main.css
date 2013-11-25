@@ -222,3 +222,7 @@ input {
 .hidden {
     display : hidden;
 }
+.data_table img {
+    width : 75px;
+    height : 75px;
+}

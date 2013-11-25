@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}资源管理{% end %}
+{% block content %}
+<table class="data_table">
+    <tr>
+        <th>ID</th>
+        <th>名称</th>
+        <th>上传者</th>
+        <th>上传时间</th>
+        <th>缩略图</th>
+        <th>操作</th>
+    </tr>
+    {% for img in imgs %}
+    <tr>
+        <td>{{img["resource_id"]}}</td>
+        <td>{{img["name"]}}</td>
+        <td>{{img["uploader"]}}</td>
+        <td>{{img["upload_time"]}}</td>
+        <td><img src="{{ static_url("%s" % img["url"]) }}"/></td>
+        <td><input type="button" class="delete_btn" value="删除" />
+</td>
+    </tr>
+    {% end %}
+</table>
+<form action="/backendresource" id="resource_form" method="post">
+    {% module xsrf_form_html() %}
+    <input type="hidden" name="mode" value="0"/>
+    <input type="hidden" name="resource_id" value=""/>
+    <table class="form_fields">
+        <tr>
+            <th colspan="2">新增资源</th>
+        </tr>
+        <tr>
+            <td>名称</td>
+            <td><input type="text" name="name" value="" /></td>
+        </tr>
+        <tr>
+            <td>选择资源</td>
+            <td><input type="file" name="file" accept="image/*"/></td>
+        </tr>
+        <tr>
+            <td colspan="2" class="btn_area">
+                <input type="button" value="提交" id="submit_btn" />
+            </td>
+        </tr>
+    </table>
+</form>
+{% end %}
+{% block js %}
+<script type="text/javascript" src="{{static_url("js/jquery-1.7.2.min.js")}}"></script>
+<script type="text/javascript">
+    $(function(){
+            $("#submit_btn").on("click", function(){
+                if (!$("#resource_form [name=name]").val()) {
+                    alert("请输入名称");
+                    return false;
+                }
+                if (!$("#resource_form [name=file]").val()) {
+                    alert("请选择文件");
+                    return false;
+                }
+                $("#resource_form").submit();
+                });
+            $(".delete_btn").on("click", function(){
+                var tds = $(this).parent().parent().children();
+                $("#resource_form [name=mode]").val("2");
+                $("#resource_form [name=resource_id]").val($(tds[0]).text());
+                $("#resource_form").submit();
+                });
+        });
+</script>
+{% end %}

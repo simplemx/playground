@@ -33,6 +33,8 @@ class BaseBackendHandler(BaseHandler):
         return "/backendlogin"
     def get_current_user(self):
         return self.get_secure_cookie("backend_user")
+    def renderMsg(self, msg):
+        self.render("template/backend/msg.html", msg = msg)
 
 class BaseFrontendHandler(BaseHandler):
     def get_current_user(self):
@@ -139,6 +141,25 @@ class BackendAdminPwdHandler(BaseBackendHandler):
             self.update("update st_admin set password='%s' where admin_name='%s'" %(password, admin))
         self.render("template/backend/msg.html", msg = msg)
 
+class BackendResourceHandler(BaseBackendHandler):
+    "handler process img upload"
+    @tornado.web.authenticated
+    def get(self):
+        imgs = self.select("select resource_id, name, b.admin_name as uploader, upload_time,url from st_resource a, st_admin b where a.upload_admin_id=b.admin_id")
+        self.render("template/backend/resource.html", imgs = imgs)
+    @tornado.web.authenticated
+    def post(self):
+        msg = "提交成功"
+        mode = self.get_argument("mode")
+        if mode == "0" :
+            name = self.get_argument("name")
+            print name
+            print self.file
+        elif mode == "2" :
+            resource_id = self.get_argument("resource_id")
+            self.update("delete from st_resource where resource_id = '%s'" % resource_id)
+        self.renderMsg(msg)
+
 ##Frontend Handler begin
 
 class IndexHandler(BaseFrontendHandler):
@@ -178,6 +199,7 @@ application = tornado.web.Application([
     (r"/backendmenu", BackendMenuHandler),
     (r"/adminpwd", BackendAdminPwdHandler),
     (r"/backenduser", BackendUserHandler),
+    (r"/backendresource", BackendResourceHandler),
 ], **settings)
 
 if __name__ == "__main__":

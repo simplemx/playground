@@ -22,7 +22,7 @@
     </tr>
     {% end %}
 </table>
-<form action="/backendresource" id="resource_form" method="post">
+<form action="/backendresource" id="resource_form" method="post" enctype="multipart/form-data">
     {% module xsrf_form_html() %}
     <input type="hidden" name="mode" value="0"/>
     <input type="hidden" name="resource_id" value=""/>

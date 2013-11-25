@@ -153,8 +153,12 @@ class BackendResourceHandler(BaseBackendHandler):
         mode = self.get_argument("mode")
         if mode == "0" :
             name = self.get_argument("name")
-            print name
-            print self.file
+            if "file" in self.request.files:
+                f = open(("resources/user/%s" % self.request.files["file"][0]["filename"]) , "wb")
+                f.write(self.request.files["file"][0]["body"])
+                f.close()
+            else:
+                self.send_error(status_code=400)
         elif mode == "2" :
             resource_id = self.get_argument("resource_id")
             self.update("delete from st_resource where resource_id = '%s'" % resource_id)

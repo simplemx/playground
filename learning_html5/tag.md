@@ -2,14 +2,14 @@
 
 支持ogg、mpeg4、webm三种格式。
 
-><video width="320" height="240" src="movie.ogg" contorls="controls">Your browser does not support the video tag</video>
+    <video width="320" height="240" src="movie.ogg" contorls="controls">Your browser does not support the video tag</video>
 
 video标签允许多个source元素，source可以为连接不同的视频文件，浏览器将使用第一个可识别的格式。
 
-><video width = "210" height="240" controls = "controls">
->    <source src="movie.ogg" type="video/ogg"></source>
->    <source src="movie.mp4" type="video/mp4"></source>
-></video>
+    <video width = "210" height="240" controls = "controls">
+        <source src="movie.ogg" type="video/ogg"></source>
+        <source src="movie.mp4" type="video/mp4"></source>
+    </video>
 
 ## 其他属性：
 
@@ -53,6 +53,6 @@ html5内，任何元素都可以拖放。
 
 首先，为了使元素可拖动，把 draggable 属性设置为 true ：
 
-><img draggable="true" />
+    <img draggable="true" />
 
 

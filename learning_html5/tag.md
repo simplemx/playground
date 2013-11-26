@@ -118,4 +118,41 @@ Canvas是逐像素进行渲染的，一旦完成绘制，那么不会继续得�
 * 已缓存的资源加载更快
 * 减少服务器负载，浏览器只会从服务器下载更新过或者更改过的资源
 
+启用缓存的时候，需要在html标签内包含manifest属性。例如
 
+    <html manifest="demo.appcache"></html>
+
+manifest文件的扩展名为appcache,指定了manifest的页面用户访问的时候都会被缓存，如果没指定manifest属性，则页面不会被缓存。manifest文件的MIME-TYPE为text/cache-manifest，服务器上注意不要屏蔽了。
+
+#### manifest文件
+
+文本文件，告知浏览器被缓存的内容，分为三部分
+
+* CACHE MANIFEST 这部分列出的文件将在首次下载后缓存
+* NETWORK 此标题下的文件需要与服务器连接，而且不会被缓存
+* FALLBACK 此标题下列出的文件规定当前页面无法正常访问时候的回退页面
+
+第一行必须是CACHE MANIFEST,例子：
+
+    CACHE MANIFEST
+    /main.css
+    /logo.gif
+    /main.js
+
+只要浏览器下载了这些文件，就算用户脱网了，还可以使用这些资源。
+
+    NETWORK:
+    login.asp
+
+规定login.asp不会被缓存，离线时不可用。
+
+    FALLBACK:
+    /html5/ /404.html
+
+规定了当物联网的时候，html5目录内所有文件都被404.html代替。
+
+当用户清空浏览器缓存、manifest文件被修改、程序更新应用缓存的时候，缓存将会发生变化。
+
+如果使用了manifest，那么就算图片、js变更了，浏览器都不会重新读取新的文件，只有变更manifest文件等，才能触发浏览器重新下载缓存文件。比较简单的方法是修改manifest文件内的注释。
+
+个别浏览器缓存限制很小，5MB左右。

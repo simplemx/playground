@@ -11,7 +11,7 @@ video标签允许多个source元素，source可以为连接不同的视频文件
         <source src="movie.mp4" type="video/mp4"></source>
     </video>
 
-## 其他属性：
+#### 其他属性：
 
 autoplay : 如果出现该属性，那么视频准备就绪后马上播放。
 
@@ -21,7 +21,7 @@ loop : 媒体播放完毕后再次播放。
 
 preload : 视频在页面加载时候进行加载，并且预备播放，如果使用autoplay，则忽视这个属性。
 
-## DOM
+#### DOM
 
 获取到video的DOM后可以调用下列的函数，play/pause等，可以通过JS去控制视频，还可以获取其他属性。
 
@@ -35,7 +35,7 @@ preload : 视频在页面加载时候进行加载，并且预备播放，如果�
 
 和video一样，也是使用多个source，同样浏览器将会使用第一个适配的格式。
 
-## 属性
+#### 属性
 
 autoplay : 自动播放
 
@@ -54,5 +54,68 @@ html5内，任何元素都可以拖放。
 首先，为了使元素可拖动，把 draggable 属性设置为 true ：
 
     <img draggable="true" />
+
+然后监听移动元素的dragstart事件，这个事件监听拖动开始的时候需要做的操作，一般可以设置event.dataTransfer.setData函数，设置被拖元素的数据类型和值。
+
+然后为接受移动元素加上dragover和drop事件，dragover事件规定了在何处放置被拖动的元素，如果允许放置，需要调用event.preventDefault函数。
+
+drop事件用于设置将被拖动元素放置到该元素中。
+
+
+
+# SVG
+
+SVG是Scalable Vector Graphics。用于定义网络的基于Vector的图形。使用XML格式，在放大或者改变尺寸的情况下不会失真。
+
+例如:
+
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="190">
+        <polygon points="100,10 40,180 190,60 10,60 160,180"
+        style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
+    </svg>
+
+SVG可以直接将svg元素插入html内。
+
+
+
+# SVG VS Canvas
+
+SVG基于XML，可以为某个元素增加事件监听器。如果SVG对象的属性发生比那话，那么浏览器自动重现图形。
+
+Canvas是逐像素进行渲染的，一旦完成绘制，那么不会继续得到浏览器的关注，如果其位置发生变化，整个场景需要重新绘制。
+
+
+
+# LocalStorage/SessionStorage
+
+传统Web是使用cookie完成浏览器存储数据的，cookie通过每个对服务器的请求来传递的。
+
+在HTML5中，数据不是每个服务器请求传递的，而是只有在请求时使用数据。网站只能访问自身的数据，不能访问其他网站存储的数据。
+
+#### LocalStorage
+
+存储的数据没有时间限制。并且存储的是字符串。访问例子
+
+    <script type="text/javascript">
+        localStorage.name="smith";
+    </script>
+
+#### SessionStorage
+
+只针对一个session进行数据存储，当用户关闭窗口后，数据会被清除。
+
+    <script type="text/javascript">
+        sessionStorate.name="smith";
+    </script>
+
+
+
+# Application cache
+
+使用application cache可以有以下几个优势：
+
+* 用户可以在应用离线时候使用它们
+* 已缓存的资源加载更快
+* 减少服务器负载，浏览器只会从服务器下载更新过或者更改过的资源
 
 

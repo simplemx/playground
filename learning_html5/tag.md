@@ -156,3 +156,19 @@ manifest文件的扩展名为appcache,指定了manifest的页面用户访问的�
 如果使用了manifest，那么就算图片、js变更了，浏览器都不会重新读取新的文件，只有变更manifest文件等，才能触发浏览器重新下载缓存文件。比较简单的方法是修改manifest文件内的注释。
 
 个别浏览器缓存限制很小，5MB左右。
+
+
+
+# Web Worker
+
+可以理解为后台线程，独立于浏览器执行JS单线程外的后台线程。
+
+首先创建一个js文件，然后创建Web Worker，创建的时候传入js文件，那么会创建一个后台线程执行这个js文件。而js文件和浏览器的通信是使用postMessage函数。而Web Worker可以监听onmessage事件，这样可以获取到worker里的小心，然后做个性化处理。
+
+终止可以调用Web Worker的terminate函数。
+
+Web Worker是外部对象，不能访问window，不能访问document，不能访问parent对象。
+
+onmessage可以传递任何对象。
+
+

@@ -172,3 +172,23 @@ Web Worker是外部对象，不能访问window，不能访问document，不能�
 onmessage可以传递任何对象。
 
 
+
+# Server Sent Event
+
+指的是网页自动获取服务器的更新。
+
+    var source = new EventSource("demo.php");
+    source.onmessage = function(event){
+        document.getElementById("result").innerHTML = event.data;
+    }
+
+服务器端例子：
+    
+    header("Content-Type:text/event-stream");
+    header("Cache-Control:no-cache");
+    echo "data:test";
+    flush();
+
+
+
+

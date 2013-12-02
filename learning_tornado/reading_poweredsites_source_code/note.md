@@ -26,7 +26,11 @@
 
 这个_context是怎么实现的呢，后续再弄明白，但是这里可以看出它是定义页面的title以及keywords然后进行页面渲染。并且后续可以看到BlogIndexHandler里的get函数进行了self._context.css.append("highlight.css")的调用，可以看出页面使用的元素都是放在_context对象里的。
 
-    
+BlogFeedHandler里使用self.set_header("Content-Type", "application/atom+xml")来使用feed的content-type。
+
+使用self.db.get进行select语句，使用self.db.execute来进行update语句。
+
+使用markdown来将markdown转换为html。    
 
 
 

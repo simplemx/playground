@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>Please Login</title>
+        <link rel="shortcut icon" href="{{static_url("favicon.ico")}}" type="images/x-icon"/>
+        <link rel="Stylesheet" href="{{static_url("css/main.css")}}" type="text/css"/> 
+    </head>
+    <body>
+        <div class="container">
+            <form id="loginForm" method="post" action="/doLogin">
+                {% module xsrf_form_html() %}
+                <label for="name">Name:</label>
+                <input type="text" name="name" value=""/>
+                <br />
+                <label for="password">Password:</label>
+                <input type="password" name="password" value=""/>
+                <br />
+                <input type="submit" value="login" />
+            </form>
+        </div>
+    </body>
+</html>
+

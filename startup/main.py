@@ -9,6 +9,9 @@ from DBUtils.PersistentDB import PersistentDB
 
 dbpool = PersistentDB(creator=MySQLdb, maxusage=1000, host='127.0.0.1', user='root', passwd='', port=3306, db='startup', charset='utf8')
 
+## ui template mode
+template_mode = "template/bootstrap/%s"
+
 ##BASE Handler
 class BaseHandler(tornado.web.RequestHandler):
     def select(self, sql):
@@ -27,6 +30,8 @@ class BaseHandler(tornado.web.RequestHandler):
         conn.commit()
         conn.close()
         return True
+    def get_template(self, template_name):
+        return template_mode % template_name
 
 class BaseBackendHandler(BaseHandler):
     def get_login_url(self):
@@ -34,7 +39,7 @@ class BaseBackendHandler(BaseHandler):
     def get_current_user(self):
         return self.get_secure_cookie("backend_user")
     def renderMsg(self, msg):
-        self.render("template/backend/msg.html", msg = msg)
+        self.render(self.get_template("backend/msg.html"), msg = msg)
 
 class BaseFrontendHandler(BaseHandler):
     def get_current_user(self):
@@ -45,7 +50,7 @@ class BaseFrontendHandler(BaseHandler):
 
 class BackendLoginHandler(BaseBackendHandler):
     def get(self):
-        self.render("template/backend/login.html")
+        self.render(self.get_template("backend/login.html"))
     def post(self):
         "post login form"
         name = self.get_argument("name")
@@ -66,7 +71,7 @@ class BackendLogoutHandler(tornado.web.RequestHandler):
 class BackendHandler(BaseBackendHandler):
     @tornado.web.authenticated
     def get(self):
-        self.render("template/backend/index.html")
+        self.render(self.get_template("backend/index.html"))
 
 class BackendMenuHandler(BaseBackendHandler):
     def select_menu(self):
@@ -74,7 +79,7 @@ class BackendMenuHandler(BaseBackendHandler):
     @tornado.web.authenticated
     def get(self):
         menus = self.select_menu()
-        self.render("template/backend/menu.html", menus = menus)
+        self.render(self.get_template("backend/menu.html"), menus = menus)
     @tornado.web.authenticated
     def post(self):
         mode = self.get_argument("mode")
@@ -97,7 +102,7 @@ class BackendMenuHandler(BaseBackendHandler):
             sql = "delete from st_menu where menu_id='%s'" % menu_id
         self.update(sql)
         menus = self.select_menu()
-        self.render("template/backend/msg.html", msg = msg)
+        self.renderMsg(msg)
 
 class BackendUserHandler(BaseBackendHandler):
     def select_all_user(self):
@@ -105,7 +110,7 @@ class BackendUserHandler(BaseBackendHandler):
     @tornado.web.authenticated
     def get(self):
         users = self.select_all_user()
-        self.render("template/backend/user.html", users = users)
+        self.render(self.get_template("backend/user.html"), users = users)
     @tornado.web.authenticated
     def post(self):
         msg = "操作成功"
@@ -122,12 +127,12 @@ class BackendUserHandler(BaseBackendHandler):
         else :
             "delete"
             self.update("delete from st_user where user_id='%s'" % user_id)
-        self.render("template/backend/msg.html", msg = msg)
+        self.renderMsg(msg)
 
 class BackendAdminPwdHandler(BaseBackendHandler):
     @tornado.web.authenticated
     def get(self):
-        self.render("template/backend/admin_pwd.html")
+        self.render(self.get_template("backend/admin_pwd.html"))
     @tornado.web.authenticated
     def post(self):
         msg = "修改成功"
@@ -139,14 +144,14 @@ class BackendAdminPwdHandler(BaseBackendHandler):
             msg = "输入的旧密码错误，请检查"
         else :
             self.update("update st_admin set password='%s' where admin_name='%s'" %(password, admin))
-        self.render("template/backend/msg.html", msg = msg)
+        self.renderMsg(msg)
 
 class BackendResourceHandler(BaseBackendHandler):
     "handler process img upload"
     @tornado.web.authenticated
     def get(self):
         imgs = self.select("select resource_id, name, b.admin_name as uploader, upload_time,url from st_resource a, st_admin b where a.upload_admin_id=b.admin_id")
-        self.render("template/backend/resource.html", imgs = imgs)
+        self.render(self.get_template("backend/resource.html"), imgs = imgs)
     @tornado.web.authenticated
     def post(self):
         msg = "提交成功"
@@ -170,7 +175,7 @@ class BackendResourceHandler(BaseBackendHandler):
 
 class IndexHandler(BaseFrontendHandler):
     def get(self):
-        self.render("template/index.html")
+        self.render("index.html")
 
 class LogoutHandler(tornado.web.RequestHandler):
     def post(self):
@@ -179,7 +184,7 @@ class LogoutHandler(tornado.web.RequestHandler):
 
 class LoginHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("template/login.html")
+        self.render("login.html")
     def post(self):
         "post login form"
         name = self.get_argument("name")

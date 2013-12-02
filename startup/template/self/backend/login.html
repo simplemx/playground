@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>Backend Login</title>
+        <link rel="shortcut icon" href="{{static_url("favicon.ico")}}" type="images/x-icon"/>
+        <link rel="Stylesheet" href="{{static_url("css/main.css")}}" type="text/css"/> 
+    </head>
+    <body>
+        <div class="container">
+            <div id="login_area">
+                <h1>Startup Backend Login</h1>
+                <form id="loginForm" method="post" action="/backendlogin">
+                    {% module xsrf_form_html() %}
+                    <table id="login_form">
+                        <tr>
+                            <td>
+                                <label for="name">用户名:</label>
+                            </td>
+                            <td>
+                                <input id="name" type="text" class="unactive" name="name" value="请输入用户名"/>
+                            </td>
+                            <td>
+                                <span id="name_warn" class="warn_info">*</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="password">密码:</label>
+                            </td>
+                            <td>
+                                <input id= "password" type="password" class="unactive" name="password" value="">
+                            </td>
+                            <td>
+                                <span id="pwd_warn" class="warn_info">*</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <input id="login_submit" type="submit" value="login" />
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript" src="{{static_url("js/jquery-1.7.2.min.js")}}"></script>
+        <script type="text/javascript">
+            $(function(){
+                    $("#name").click(function(){
+                        var input = $(this);
+                        if ("请输入用户名" === input.attr("value")) {
+                            input.attr("value", "");
+                        }
+                    }); 
+                    
+                    var name_change = function(){
+                        var input = $(this);
+                        var text = input.attr("value");
+                        if ("" === text || !text) {
+                            input.attr("value", "请输入用户名");  
+                            input.attr("class", "unactive");
+                        }
+                        else {
+                            input.attr("class", "");
+                        }                        
+                    };
+
+                    $("#name").change(name_change);
+                    
+                    $("#login_submit").click(function(){
+                        var name = $("#name").val();
+                        var pwd = $("#password").val();
+                        if (!name || name === "" || name === "请输入用户名") {
+                            $("#name_warn").text("请输入用户名");
+                            return false;
+                        }
+                        if (!pwd || pwd === "" ) {
+                            $("#pwd_warn").text("请输入密码");
+                            return false;
+                        }
+                        return true;
+                    });
+            }); 
+        </script>
+    </body>
+</html

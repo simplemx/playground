@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>Startup</title>
+        <link rel="shortcut icon" href="{{static_url("favicon.ico")}}" type="images/x-icon"/>
+        <link rel="Stylesheet" href="{{static_url("css/main.css")}}" type="text/css"/> 
+    </head>
+    <body>
+        <div class="container">
+            <div id="header">
+                <div class="user_bar">
+                    {% if current_user is None %}
+                        <span>Please <a href="/login">login</a></span>
+                    {% end %}
+                    {% if current_user is not None %}
+                        <span>
+                            <form id="logout_form" action="/logout" method="post">
+                                {% module xsrf_form_html() %}
+                            </form>
+                            <a href="" onclick="javascript:document.getElementById('logout_form').submit();return false;">logout</a>
+                        </span>
+                    {% end %}
+                </div> 
+                <h1>StartUp</h1>
+                <ul class="nav">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Other</a></li>
+                </ul>
+            </div>
+            <div id="content">
+                content
+            </div>
+            <div id="footer">
+                footer
+            </div>
+        </div>
+    </body>
+</html>

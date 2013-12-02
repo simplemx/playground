@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}修改密码{% end %}
+{% block content %}
+                <form action="/adminpwd" method="post" id="pwd_form">
+                    {% module xsrf_form_html() %}
+                    <table class="form_fields">
+                        <tr>
+                            <th colspan="2">管理员密码修改</th>
+                        </tr>
+                        <tr>
+                            <td>旧密码</td>
+                            <td><input type="password" name="old_pwd"/></td>
+                        </tr>
+                        <tr>
+                            <td>新密码</td>
+                            <td><input type="password" name="password" /></td>
+                        </tr>
+                        <tr>
+                            <td>新密码确认</td>
+                            <td><input type="password" name="password2" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="btn_area">
+                                <input type="button" id="btn_submit" value="提交" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>   
+{% end %}         
+{% block js %}
+        <script type="text/javascript" src="{{static_url("js/jquery-1.7.2.min.js")}}"></script>
+        <script type="text/javascript">
+            $(function(){
+                $("#pwd_form").on("submit", function(){
+                    if (!$("#pwd_form [name=old_pwd]").val()) {
+                        alert("请输入旧密码");
+                        return false;
+                    }
+                    if (!$("#pwd_form [name=password]").val()) {
+                        alert("请输入密码");
+                        return false;
+                    }
+                    if ($("#pwd_form [name=password2]").val() !== $("#pwd_form [name=password]").val()) {
+                        alert("密码和确认密码不一致，请再次输入");
+                        return false;
+                    }
+
+                    return true;
+                });
+                $("#btn_submit").on("click", function(){
+                    $("#pwd_form").submit();
+                });
+            });
+        </script>
+{% end %}

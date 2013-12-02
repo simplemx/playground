@@ -12,6 +12,8 @@
                ]
             ]
 
+
+
 # poweredsites/handlers/blog.py
 
 其他的BaseHandler都放在/libs/handler.py里，不明白为什么这里将这个BaseHndler放到这个具体页面模块里。
@@ -34,4 +36,15 @@ BlogFeedHandler里使用self.set_header("Content-Type", "application/atom+xml")�
 
 
 
+# poweredsites/handlers/chat.py
+
+使用了Mixin来重用代码，十分优雅呀。
+
+使用了asynchronous Decoractor，来使用异步。
+
+
+
+# poweredsites/handlers/front.py
+
+FrontIndexHandler作为一个父类，定义了一系列的私有变量，提供给子类复用和重写。
 

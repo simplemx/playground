@@ -4,47 +4,51 @@
         <link rel="stylesheet" href="{{static_url("css/zTreeStyle.css")}}" type="text/css"/>
 {% end %}
 {% block content %}    
-                <div class="left_panel">
-                    <ul id="menu_tree" class="ztree">
-                    </ul>
+<div class="row">
+    <div class="col-sx-12 col-sm-2">
+        <ul id="menu_tree" class="ztree">
+        </ul>
+    </div>
+    <div class="col-sx-12 col-sm-10">
+        <br />
+        <div class="row">
+            <div class="col-sx-12 text-center"><b>菜单信息</b></div>
+        </div>
+        <br />
+         <form id="menu_form" class="form-horizontal" method="post" action="/backendmenu">
+            {% module xsrf_form_html() %}
+            <input type="hidden" id="mode" name="mode" value ="2" />      
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="menu_id">菜单ID</label>
+                <div class="col-sm-10">
+                    <input class="form-control" disabled="disabled" id="menu_id" name="menu_id" type="text" />
                 </div>
-                <div class="main_panel">
-                    <form id="menu_form" method="post" action="/backendmenu">
-                        {% module xsrf_form_html() %}
-                        <input type="hidden" id="mode" name="mode" value ="2" />      
-                            <table class="form_fields">
-                                <tr>
-                                    <th colspan="2">菜单信息</th>
-                                </tr>
-                                <tr>
-                                    <td><label for="menu_id">菜单ID</label></td>
-                                    <td><input type="text" disabled="disabled" id="menu_id" name="menu_id" value="" /></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="menu_name">菜单名称</label></td>
-                                    <td><input type="text" id="menu_name" name="menu_name" value="" /></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="url">菜单路径</label></td>
-                                    <td><input type="text" id="url" name="url" value=""/></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="parent_id">父菜单</label></td>
-                                    <td><input type="text" id="parent_id" name="parent_id" value="" /></td>
-                                </tr> 
-                                <tr>
-                                    <td class="btn_area" colspan="2">
-                                        <input type="button" onclick="javascript:return addMenu();" value="新增"/>
-                                        <input type="button" onclick="javascript:return deleteMenu();" value="删除" />
-                                        <input type="submit" value="提交"/>
-                                    </td>
-                                </tr>
-                            </table>
-                    </form>  
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="menu_name">菜单名称</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="menu_name" name="menu_name" type="text" />
                 </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="url">菜单URL</label>
+                <div class="col-sm-10"><input class="form-control" id="url" name="url" type="text" /></div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="parent_id">父菜单</label>
+                <div class="col-sm-10"><input class="form-control" id="parent_id" name="parent_id" type="text" /></div>
+            </div>
+            <div class="text-center">
+                <button onclick="javascript:return addMenu();" class="btn btn-primary">新增</button>
+                <button onclick="javascript:return deleteMenu();" class="btn btn-primary">删除</button>
+                <button id="submit_btn" class="btn btn-primary">提交</button>
+            </div>
+        </form> 
+    </div>
+</div>
+               
 {% end %}
 {% block js %}
-        <script type="text/javascript" src="{{static_url("js/jquery-1.7.2.min.js")}}"></script>
         <script type="text/javascript" src="{{static_url("js/jquery.ztree.core-3.5.min.js")}}"></script>
         <script type="text/javascript">
 var EDIT = 1, ADD = 2, DELE = 3;
@@ -115,7 +119,10 @@ $(document).ready(function(){
             //enable disable fields
             $("#menu_id").prop("disabled", false);  
             return true;
-        })
+            })
+    $("#submit_btn").click(function(){
+        $("#menu_form").submit();
+        });
 });
             
         </script>

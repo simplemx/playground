@@ -3,6 +3,15 @@ body {
     background-repeat : repeat;
 }
 
+table {
+    background-color : #fff;
+}
+
 .content {
     min-height : 450px;
+}
+
+.table img {
+    width : 75px;
+    height : 75px;
 }

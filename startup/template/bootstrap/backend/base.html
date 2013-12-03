@@ -3,7 +3,8 @@
         <title>{% block title %}Startup Manager{% end %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">                
         <link rel="shortcut icon" href="{{static_url("favicon.ico")}}" type="images/x-icon"/>
-        <link rel="Stylesheet" href="{{static_url("css/bootstrap/bootstrap.min.css")}}" type="text/css"/> 
+        <link rel="Stylesheet" href="{{static_url("css/bootstrap/bootstrap.min.css")}}" type="text/css"/>
+        <link rel="Stylesheet" href="{{static_url("css/bootstrap/app.css")}}" type="text/css"/> 
         {% block css %}
         {% end %}
     </head>
@@ -13,15 +14,15 @@
                 <div class="row">
                     <div class="col-sx-12 text-center col-sm-3 col-sm-offset-9">
                         {% if current_user is None %}
-                            <span>Please <a class="btn btn-default" href="/backendlogin">login</a></span>
+                            <span>Please <a class="btn btn-default" role="button" href="/backendlogin">login</a></span>
                         {% end %}
                         {% if current_user is not None %}
                             <span>
                                 <form id="logout_form" action="/backendlogout" method="post">
                                     {% module xsrf_form_html() %}
                                 </form>
-                                {{current_user}}
-                                <a href="" onclick="javascript:document.getElementById('logout_form').submit();return false;">logout</a>
+                                您好!<b>{{current_user}}</b>
+                                <a href="" class="btn btn-primary" role="button" onclick="javascript:document.getElementById('logout_form').submit();return false;">点我退出</a>
                             </span>
                         {% end %} 
                     </div>
@@ -47,9 +48,9 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">用户管理 <b class="caret"></b></a>
 								<ul class="dropdown-menu">
-								    <li><a href="#">密码修改</a></li>
+								    <li><a href="/adminpwd">密码修改</a></li>
 								    <li class="divider"></li>
-								    <li><a href="#">用户信息修改</a></li>
+								    <li><a href="/backenduser">用户信息修改</a></li>
 								</ul>
 							</li>
 							<li class="dropdown">
@@ -73,15 +74,19 @@
 				</nav>
             </div>
         </header>
-        <div class="container">
-            <div id="content">
-                {% block content %}
-                {% end %}
-            </div>
-            <div id="footer">
-                <h6>designed by simplemx, powered by tornado</h6>
-            </div> 
+        <div class="container content">
+            {% block content %}
+            {% end %}
         </div>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sx-12 text-center col-sm-4 col-sm-offset-4">
+                        <h6>designed by simplemx, powered by tornado</h6>
+                    </div>
+                </div>
+            </div> 
+        </footer> 
         <script type="text/javascript" src="{{static_url("js/jquery-1.7.2.min.js")}}"></script>
         <script type="text/javascript" src="{{static_url("js/bootstrap.js")}}"></script>
         {% block js %}

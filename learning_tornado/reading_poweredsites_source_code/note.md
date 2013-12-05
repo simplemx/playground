@@ -95,3 +95,13 @@ get_error_html函数重写报错页面，如果是debug模式那么跳到404_deb
 # poweredsites/lib/const.py
 
 常量定义都放在这个文件里，里面定义不同的class，然后定义class里不同的类变量。
+
+
+
+# poweredsites/lib/cache.py
+
+cache这个decoractor用于根据条件来进行缓存，有缓存的话直接从缓存里获取，否则调用原函数，然后将返回结果缓存起来。
+
+page这个decoractor用于缓存整个返回，包括header以及html，传入self，从self里获取_status_code/_headers/_write_buffer。
+
+

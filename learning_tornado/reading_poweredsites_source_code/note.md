@@ -105,3 +105,25 @@ cache这个decoractor用于根据条件来进行缓存，有缓存的话直接�
 page这个decoractor用于缓存整个返回，包括header以及html，传入self，从self里获取_status_code/_headers/_write_buffer。
 
 
+
+# templates/base.html
+
+title、description等都是直接从handler里的context对象里获取。
+
+这里有个样式设置
+
+    <style type='text/css'>
+        {% include background.css %}
+    </style>
+
+从将background.css文件的内容直接引入到这里，为嘛呢？可以看看background.css里，里面都是带有background image的样式，里面也使用了static_url函数来为图片引入加入hash，这样当后续这些图片变更的时候会自动更新。将这些样式以这种方式引入也可以避免整个css文件更新。而且维护的时候也是维护文件，挺方便的，而实际上多一个style并不会有太大的影响。不过觉得采用另外一个文件引入也可以的，除非图片经常变化，否则感觉这种做法其实没有太大的意义。
+
+样式渲染的时候使用context.options.combined_media来判断是否使用合并的css。否则每个样式分别输出。
+
+header、footer等html直接采用{% include header.html %}来引入，将文件更解耦。
+
+
+
+
+
+

@@ -15,7 +15,7 @@ settings = {
     "login_url" : "/login",
     "cookie_secret" : "test",
     "xsrf_cookies" : True,
-    "template_path" : os.path.join(os.path.dirname(__file__), "template/bootstrap"),
+    "template_path" : os.path.join(os.path.dirname(__file__), "template/self"),
 }
 application = tornado.web.Application([
     (r"/", IndexHandler),

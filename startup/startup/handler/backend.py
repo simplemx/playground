@@ -135,3 +135,13 @@ class BackendResourceHandler(BaseBackendHandler):
             resource_id = self.get_argument("resource_id")
             self.update("delete from st_resource where resource_id = '%s'" % resource_id)
         self.renderMsg(msg)
+
+handlers = [
+    (r"/backend", BackendHandler),
+    (r"/backendlogin", BackendLoginHandler),
+    (r"/backendlogout", BackendLogoutHandler),
+    (r"/backendmenu", BackendMenuHandler),
+    (r"/adminpwd", BackendAdminPwdHandler),
+    (r"/backenduser", BackendUserHandler),
+    (r"/backendresource", BackendResourceHandler),
+        ]

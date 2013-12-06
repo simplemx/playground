@@ -26,3 +26,10 @@ class LoginHandler(tornado.web.RequestHandler):
         password = self.get_argument("password")
         self.set_secure_cookie("user", name, expires_days = 1)
         self.redirect("/")
+
+handlers = [
+    (r"/", IndexHandler),
+    (r"/login", LoginHandler),
+    (r"/doLogin", LoginHandler),
+    (r"/logout", LogoutHandler),
+        ]

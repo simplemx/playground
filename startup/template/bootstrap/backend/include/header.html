@@ -1,0 +1,26 @@
+<header>
+    <div class="container">
+        <div class="row">
+		    <div class="col-sx-12 text-center col-sm-3 col-sm-offset-9">
+		        {% if current_user is None %}
+		        <span>Please <a class="btn btn-default" role="button" href="/backendlogin">login</a></span>
+		        {% end %}
+		        {% if current_user is not None %}
+		        <span>
+		            <form id="logout_form" action="/backendlogout" method="post">
+		            {% module xsrf_form_html() %}
+		            </form>
+		            您好!<b>{{current_user}}</b>
+		            <a href="" class="btn btn-default" role="button" onclick="javascript:document.getElementById('logout_form').submit();return false;">点我退出</a>
+		        </span>
+		        {% end %} 
+		    </div>
+		</div>
+		<div class="row">
+		    <div class="col-sx-12 text-center">
+		        <h1>Startup Manager</h1>
+            </div>
+        </div>
+        {% include nav.html %}			
+    </div>
+</header>

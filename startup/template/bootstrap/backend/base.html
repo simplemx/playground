@@ -9,84 +9,12 @@
         {% end %}
     </head>
     <body>
-        <header>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sx-12 text-center col-sm-3 col-sm-offset-9">
-                        {% if current_user is None %}
-                            <span>Please <a class="btn btn-default" role="button" href="/backendlogin">login</a></span>
-                        {% end %}
-                        {% if current_user is not None %}
-                            <span>
-                                <form id="logout_form" action="/backendlogout" method="post">
-                                    {% module xsrf_form_html() %}
-                                </form>
-                                您好!<b>{{current_user}}</b>
-                                <a href="" class="btn btn-default" role="button" onclick="javascript:document.getElementById('logout_form').submit();return false;">点我退出</a>
-                            </span>
-                        {% end %} 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sx-12 text-center">
-                        <h1>Startup Manager</h1>
-                    </div>
-                </div>
-				<nav class="navbar navbar-default" role="navigation">
-			        <div class="navbar-header">
-					    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar_menu">
-						    <span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						    <span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand" href="#"><strong>欢迎使用</strong></a>
-					</div>
-					<div class="collapse navbar-collapse" id="navbar_menu">
-						<ul class="nav navbar-nav">
-							<li class="active"><a href="/backend">首页</a></li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">用户管理 <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-								    <li><a href="/adminpwd">密码修改</a></li>
-								    <li class="divider"></li>
-								    <li><a href="/backenduser">用户信息修改</a></li>
-								</ul>
-							</li>
-							<li class="dropdown">
-								 <a href="#" class="dropdown-toggle" data-toggle="dropdown">权限管理 <b class="caret"></b></a>
-								 <ul class="dropdown-menu">
-								     <li><a href="">添加权限</a></li>
-								     <li class="divider"></li>
-								     <li><a href="">用户权限管理</a></li>
-								     <li class="divider"></li>
-								     <li><a href="">添加约束</a></li>
-								  </ul>
-							</li>
-							<li>
-								<a href="/backendmenu">菜单管理</a>
-							</li>
-							<li>
-								<a href="/backendresource">资源管理</a>
-							</li>
-						</ul>
-					</div><!-- /.navbar-collapse -->
-				</nav>
-            </div>
-        </header>
+        {% include "include/header.html" %} 
         <div class="container content">
             {% block content %}
             {% end %}
         </div>
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sx-12 text-center col-sm-4 col-sm-offset-4">
-                        <h6>designed by simplemx, powered by tornado</h6>
-                    </div>
-                </div>
-            </div> 
-        </footer> 
+        {% include "include/footer.html" %}
         <script type="text/javascript" src="{{static_url("js/jquery-1.7.2.min.js")}}"></script>
         <script type="text/javascript" src="{{static_url("js/bootstrap.js")}}"></script>
         {% block js %}

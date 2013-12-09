@@ -136,6 +136,11 @@ class BackendResourceHandler(BaseBackendHandler):
             self.update("delete from st_resource where resource_id = '%s'" % resource_id)
         self.renderMsg(msg)
 
+class BackendArticleHandler(BaseBackendHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render("backend/article.html")
+
 handlers = [
     (r"/backend", BackendHandler),
     (r"/backendlogin", BackendLoginHandler),
@@ -144,4 +149,6 @@ handlers = [
     (r"/adminpwd", BackendAdminPwdHandler),
     (r"/backenduser", BackendUserHandler),
     (r"/backendresource", BackendResourceHandler),
+    (r"/backendarticle", BackendArticleHandler),
+    (r"/addarticle", BackendArticleHandler),
         ]

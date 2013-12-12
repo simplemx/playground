@@ -124,6 +124,33 @@ header、footer等html直接采用{% include header.html %}来引入，将文件
 
 
 
+# model/favorite.py
+
+这些类似Java的Dao类都继承lib.query里的Query对象，这个对象封装了数据库操作的接口。
+
+可以看到这里对数据库的查询都是经过了封装而提供出来更友好的接口了。
+
+     def cancel_exist_favorite_by_id(self, favorite_id):
+        where = "id = %s" %  favorite_id
+        return self.where(where).delete()
+
+不过呢，这样的方式其实个人不见得喜欢。的确自己写的时候比较清晰。所谓的更OO，但是直接delete Sql有啥大区别吗？当然咯，所谓的很多ORM最后也不过是拼装Sql，为的就是解放开发者，但是对于这些简单的数据库操作，其实这样感觉有点过度了，不过也有好处，要是有公共的处理，这样的方式比较好加。
+
+     def get_plane_by_plane_id(self):
+        where = ""
+        planes = self.get_all_planes()
+        for plane in planes:
+            where = "plane_id = %s" % plane["id"]
+            plane["nodes"] = self.table("node").where(where).select()
+        return planes
+
+上述的代码，首先查询出所有的planes，然后从所有planes里取出id来查询nodes，这样一次查询了好多次数据库，也就是ORM总是没有实际的sql灵活就是了。
 
 
+# 模板
 
+F2E.im是使用jinja2来作为模板的，并没有使用tornado的默认模板。
+
+随便看了几眼jinja2的模板，感觉和tornado的有点类似，不过语法稍微有点不一样。
+
+回想JSP、Tapestry、Mustache、Tempo、Freemarker这些用过的模板，还是喜欢简洁轻量的。像Tornado这样就挺简单清晰，不过很不喜欢UIModule，看到后就没想用的想法。

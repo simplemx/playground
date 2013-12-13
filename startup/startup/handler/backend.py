@@ -139,8 +139,20 @@ class BackendResourceHandler(BaseBackendHandler):
 class BackendArticleHandler(BaseBackendHandler):
     @tornado.web.authenticated
     def get(self):
-        self.render("backend/article.html")
+        admin = self.get_current_user()
+        admin_info = self.select("select admin_id from st_admin where admin_name='%s'" % admin)
+        articles = self.select("select article_id, name, content, create_date, modify_date from st_article where author_id='%s'" % admin_info[0]["admin_id"])
+        self.render("backend/article.html", articles = articles)
 
+    @tornado.web.authenticated
+    def post(self):
+        mode = self.get_argument("mode")
+        article_id = self.get_argument("article_id")
+        if mode == "2":
+            "delete"
+            self.update("delete from st_article where article_id ='%s'" % article_id)
+        self.renderMsg("提交成功")
+        
 handlers = [
     (r"/backend", BackendHandler),
     (r"/backendlogin", BackendLoginHandler),

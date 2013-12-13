@@ -13,7 +13,17 @@ class BaseHandler(tornado.web.RequestHandler):
         result = cur.fetchall()
         cur.close()
         self.conn.close()
+        self._set_default_value(result)
         return result
+
+    def _set_default_value(self, list):
+        "tornado's default behavior will output None into None \
+                so turn None into empty string"
+        if len(list) > 0:
+            for each in list:
+                for key in each:
+                    if each[key] is None:
+                        each[key] = ""
 
     def update(self, sql):
         cur = self.conn.cursor()

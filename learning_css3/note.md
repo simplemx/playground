@@ -70,5 +70,41 @@ word-wrap允许文本强制换行，单词会被拆分。
 
 # 字体
 
+使用CSS3，那么可以将字体文件存储在web服务器上，这样可以让用户下载对应的字体，而不是之前那样只能使用用户计算机上安装的字体。
+
+必须首先定义字体的名称，然后指向该字体文件。
+
+    @font-face
+    {
+    font-family : myfont;
+    src : url('sansation_Light.ttf'),
+          url('sansation_Light.eot');
+    }
+    div {font-family : myfont;}
+
+使用粗体文本的时候可以添加另外一个@font-face，这样可以为相同的字体设置许多的@font-face规则来使用。
+
+
+
+# 3d transform
+
+可以使用rotateX/rotateY来让元素围绕X、Y轴来围绕。
+
+# 多列
+
+通过CSS3，可以创建多个列来对文本进行布局。
+
+column-count规定元素被分隔的列数。
+
+把div元素的文本分隔成三列:
+
+    div{
+        -moz-column-count : 3;
+        -webkit-column-count : 3;
+        column-count : 3;
+    }
+
+
+column-gap 规定列之间的间隔。column-rule规定列之间宽度和颜色规则。
 
 

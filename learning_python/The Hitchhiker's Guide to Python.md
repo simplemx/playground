@@ -51,4 +51,45 @@ Best
 
 
 
+# Packages
+
+任何带有__init__.py文件的文件夹都会被认为是Python Package。
+
+import pack.module将会import文件夹pack下的module模块。这个语句会首先执行pack下的__init__.py，执行所有的语句，然后再执行pack下的module.py。
+
+__init__.py里逻辑太多是一个bad pratice。让这个文件是空的比较好。
+
+使用import pack.module as module可以方便的减少编写pack路径代码。
+
+
+
+# Object-oriented programming
+
+Python内所有事物都是对象，Functions、Classes、Types都是对象，Functions是first-class objects。从这个层面来说Python是很Object-oriented的。
+
+但是Python并不是将Object-oriented来作为主要的编程范式，Python项目更倾向于使用少量或者非Object-oriented，比如很少的类关系等。
+
+而且利用module和package，已经可以取得一定的封装和抽象能力，这些都是使用Object-oriented的主要原因。所以业务流程不需要Object-oriented的时候尽量少使用。
+
+使用Object-oriented会引入一定的代价，就是状态。也就是为什么认为Functional programming比Object-oriented programming要更优秀的原因，有状态更容易引发锁等问题。
+
+在使用函数和过程式代码的时候注意尽量减少副作用(side effect)。避免side effect的好处有：
+
+* 相同的输入必定是相同的输出
+
+* 更方便重构优化
+
+* 更方便进行单元测试
+
+* 更容易维护
+
+总之，使用没有副作用的Pure function比起classes和objects在某些架构上是一个更有效的设计。
+
+当然，Object-oriented在很多场合也很适用，比如GUI程序，游戏等。这些程序里的对象都是有一个比较长的生命周期的。
+
+
+
+
+
+
 

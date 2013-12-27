@@ -185,4 +185,111 @@ Best
 
 
 
+# Code style
+
+* 使用简单明确的表达
+
+* One statement per line
+
+* 所有的private变量都会使用_开头
+
+* 避免使用多个return值
+
+### Conventions
+
+* check if variable equals a constant
+
+Bad
+
+    if attr == True:
+        pass
+    if attr == None:
+        pass
+
+Good
+
+    if attr:
+        pass
+    if not attr:
+        pass
+    if attr is None:
+        pass
+
+* access a dictionary element
+
+Bad
+
+    d = {"hello" : "world"}
+    if d.has_key("hello"):
+        print d["hello"]
+
+Good
+
+    d = {"hello" : "world"}
+    print d.get("hello", "default_value")
+    if "hello" in d:
+        print d["hello"]
+
+* short ways to manipulate list
+
+Bad
+
+    a = [3, 4, 5]
+    b = []
+    for i in a:
+        if i > 4:
+            b.append(i)
+
+Good
+
+    a = [3, 4, 5]
+    b = [i for i in a if i > 4]
+    b = filter(lambda x :x > 4, a)
+
+enumerate函数迭代list有更好的可读性。
+
+    for i, item in enumerate(a):
+        print i, item
+
+* read from a file
+
+Bad
+
+    f = open("file.txt")
+    a = f.read()
+    print a
+    f.close()
+
+Good
+
+    with open("file.txt") as f:
+        for line in f:
+            print line
+
+* line continuations
+
+当内容过长而在行末使用\的时候，如果\后还有其他内容出现，那么会有不可预见的情况出现，更推荐使用()来代替\。
+
+Bad
+
+    string = """flkdjkafdlkajf da f\
+    fdajfkdlajfd"""
+
+    from module import a, b,\
+    c
+
+Good
+
+    string = ("fdfd"
+    "fdfd")
+
+    from module import (
+    a, b, c)
+
+
+
+# Documentation
+
+* README放在根目录下，包括工程目的、介绍安装等都可以放在README文件里。
+
 

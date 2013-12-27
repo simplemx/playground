@@ -51,7 +51,7 @@ Best
 
 
 
-# Packages
+### Packages
 
 任何带有__init__.py文件的文件夹都会被认为是Python Package。
 
@@ -63,7 +63,7 @@ __init__.py里逻辑太多是一个bad pratice。让这个文件是空的比较�
 
 
 
-# Object-oriented programming
+### Object-oriented programming
 
 Python内所有事物都是对象，Functions、Classes、Types都是对象，Functions是first-class objects。从这个层面来说Python是很Object-oriented的。
 
@@ -85,10 +85,103 @@ Python内所有事物都是对象，Functions、Classes、Types都是对象，Fu
 
 总之，使用没有副作用的Pure function比起classes和objects在某些架构上是一个更有效的设计。
 
-当然，Object-oriented在很多场合也很适用，比如GUI程序，游戏等。这些程序里的对象都是有一个比较长的生命周期的。
+当然，Object-oriented在很多场合也http://ww4.sinaimg.cn/large/a7cb85c1jw1ebvqr98nlwg208f05yx6p.gif很适用，比如GUI程序，游戏等。这些程序里的对象都是有一个比较长的生命周期的。
 
 
 
+### Decorators
+
+A decorator is a function or a class that wraps (or decorates) a function or a method.
+
+    def foo():
+        pass
+    
+    def decoractor(func):
+        # do something
+        return func
+
+    foo = decoractor(foo) # 人工decoractor
+
+    @decoractor
+    def bar():
+        # 自动加上decoractor
+        pass
+
+这种方式和AOP一样，可以将非业务逻辑分开。比如缓存等就很适合使用这种方式。
+
+
+
+### Dynamic typing
+
+Python是动态类型的，变量没有固定的类型。变量只是指向对象的引用。
+
+由于动态类型的特性，变量可以被设置为不同类型的对象，所以对于debug等很不利。
+
+如何避免这样的问题呢？
+
+* 避免使用相同的变量来指向不同的对象。
+
+Bad
+
+    a = 1
+    a = "string"
+
+Good
+
+    count = 1
+    msg = "string"
+
+相关的对象，如果类型不同，最好也使用不同的变量来定义。
+
+使用相同变量并没有带来多大的性能提高，赋值的时候都会new新对象（但是引用会减少啊，不过现在的计算机里引用增多事实上并没有什么问题），当嵌套过多，很难去判断一个变量的类型。
+
+一些编码实践，比如函数式编程，推荐不要重新赋值给一个对象，Java里就是使用final关键字。Python没有这样的语法，总之，避免重新赋值比较妥当。
+
+
+
+### Mutable/Immutable types
+
+List和dict都是Mutable对象。这些对象提供了方法修改这个对象。
+
+Immutable对象没有提供方法修改状态。例如x=6，x = x+1之后x是一个新的对象，并不是原来6的对象。
+
+Mutable对象不可以用来作为dict的key。因为它是可变的。
+
+Python的字符串是不可变对象。这意味着，拼接字符串的方式比起使用join来拼接list里的子字符串更低效，因为拼接的时候会产生中间字符串对象。
+
+Bad
+
+    nums = ""
+    for n in range(20):
+        nums += str(n)
+    print nums
+
+Good
+
+    nums = []
+    for n in range(20):
+        nums.append(str(n))
+    print "".join(nums)
+
+Best
+
+    nums = [str(n) for n in range(20)]
+    print "".join(nums)
+
+但是join并不是总是推荐的，如果是从已经定义的字符串里构造新字符串，那么使用+将会比join更高效，因为没有构造新的对象的。
+
+    foo = 'foo'
+    bar = 'bar'
+    foobar = foo + bar #better than "".join([foo, bar])
+    fooooo = "".join([foo, 'ooo']) # better than foo + 'ooo'
+
+另外还可以使用format方式来代替上述的构造字符串。
+
+    foo = "foo"
+    bar = "bar"
+    foobar = '%s%s' % (foo, bar) # it's ok
+    foobar = '{0}{1}'.format(foo, bar) # it's better
+    foobar = '{foo}{bar}'.format(foo = foo, bar = bar) # it's best
 
 
 

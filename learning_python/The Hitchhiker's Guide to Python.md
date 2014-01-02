@@ -293,3 +293,63 @@ Good
 * README放在根目录下，包括工程目的、介绍安装等都可以放在README文件里。
 
 
+
+
+# Testing
+
+关于单元测试的宗旨是：
+
+* 单元测试应该关注小段的不可拆散的简单逻辑并且保证正确
+
+* 单元测试之间应该互相独立
+
+* 单元测试应该尽量执行快速，如果有执行缓慢的应该采用scheduler的方式来每天执行，而其他快速执行的应该尽量多运行
+
+* 在开始编码前应该执行单元测试，而编码之后也应该执行单元测试
+
+* 共享的代码可以加个hook，一旦提交就执行单元测试
+
+* 如果需要离开编码一段时间，可以为当前正在编写的功能编写一个失败的单元测试，以方便后续回来后执行查看
+
+* 碰到bug的时候可以编写单元测试来重现这个bug
+
+* 和编码不同，尽量采用长并且说明的命名来命名单元测试
+
+* 单元测试对新人接入以及维护修改很有帮助
+
+
+
+# Common Gotchas
+
+* 默认参数对象是所有函数调用共享的。当函数定义的时候，对象创建了，后续的调用都会使用这个对象
+
+    def append_to(element, to = None):
+        if to is None:
+            to  = []
+        pass
+
+* Python的闭包是late binding。也就是闭包里变量的值只有在函数执行的时候才会look up然后被赋值，这点和Javascript的闭包一样。
+
+    def create_multipilers():
+        return [lambda x : i * x for i in range(5)]
+    for multipiler in create_multipilers():
+        print multipiler(2)
+
+output:
+
+    8
+    8
+    8
+    8
+    8
+
+而且，无论是使用lambda来定义函数还是使用def，这个行为都是一样的。
+
+解决方法和Javascript类似
+
+    def create_multipilers():
+        return [lambda x, i = i: i * x for i in range(5)]
+
+
+
+

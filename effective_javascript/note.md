@@ -56,3 +56,77 @@ JS里的|操作都是按这种方式来运算的，首先将float按位计算，
 
 # 尽量不要使用浮点计算，最好使用integer
 
+
+
+# Beware of Implicit Coercions
+
+JS不同类型之间会发生强制转换，比如允许boolean参与运算。
+
+     3 + true;//4
+
+但尝试调用不是function对象和获取null的属性就会抛错。
+
+而在其他场合,JS尽量将类型转换为适合的类型来满足运算。而且+号操作符还可以运行数学运算和字符串运算。
+
+当数字和字符串相加，JS默认会将数字转换为字符串。
+
+     1 + 2 + "3";//"33"
+     (1 + 2) + "3";//"33"
+
+|操作符不仅会将数字转换为2进制位，对于字符串可以转换为数字的也会相同地转换为二进制位来计算，这个方式对于~/&/^/|/<</>>/>>>这些操作符全都适用。
+
+     "17" * 3;//51
+     "8" | "1";//9
+
+但是，null变量参与数学运算的时候，会被转换为0来计算，这个很容易造成不易察觉的错误。同理，undefined变量会转换为NaN。这些类型转换很容易引起不易察觉的错误。更恶劣的是，检查NaN也不能使用===来判断。
+
+     var x = NaN;
+     x === NaN;//false
+     isNaN(x);//true
+
+要使用isNaN才可以。但是，isNaN对其他类型的对象也适用。
+
+     isNaN({});//true
+     isNaN("");//true
+     isNaN(undefined);//true
+
+不过，如何判断NaN却可以用一个简单的方式来判断，因为NaN是唯一的不等于自己的值，所以可以简单的使用:
+
+     var a = NaN;
+     a !== NaN;//true it's NaN
+
+对象参与字符串拼接运算的时候会调用toString函数。而对象的值可以通过valueOf函数来获得，所以可以通过重写这两个函数来获得想要的效果。
+
+     "J" + {toString : function(){return "S";}};//"JS"
+     2 * {valueOf : function(){return 3;}};//6
+
+但值得注意的是，当对象参与+运算的时候，由于+既可以表达数学+也可以表达字符串拼接，当对象既有toString又有valueOf的时候，怎么判断呢，对象都可以转换为数字和字符串，这种时候，JS默认选择valueOf，这又引起了一些出人意料的现象。
+
+     var obj = {toString : function(){return "a";},
+               valueOf : function(){return 2;}};
+     "object" + obj;//"object2"
+
+所以，只有当对象会被作为数学运算的时候，才应该重写valueOf函数。并且这些对象的valueOf和toString函数都是返回相同的数字，这样才能保持行为的一致，其他情况下减少valueOf函数的使用。
+
+if/||/&&操作符都可以执行boolean值，但接受所有的值，非boolean值都会转换为boolean值。
+
+除了字符串和数字外所有对象都会当成为true，false值的对象有false,0, -0, "", NaN, null, undefined。
+
+比如检查undefined值。
+
+     if (!a) {
+          a = 2;
+     }
+
+当a为0的时候，a也会被设置为2。更加的检查undefined值为使用typeof或者undefined对象
+
+     typeof a === "undefined"
+     a === undefined
+
+# +号既可以代表数学加法也可以代表字符串拼接
+
+# object可以通过valueOf来定义数字值，通过toString来定义字符串值
+
+# Objects with valueOf methods should implement a toString method that provides a string representation of the number produced by valueOf.
+
+# 使用typeof来检查undefined

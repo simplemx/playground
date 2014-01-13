@@ -48,13 +48,14 @@ JS里的|操作都是按这种方式来运算的，首先将float按位计算，
 
 所以需要牢记
 
-# JS里的number是双精度浮点
++ JS里的number是双精度浮点
 
-# JS里整形也是浮点类型，不过是个子集而已
++ JS里整形也是浮点类型，不过是个子集而已
 
-# |会将数字转换为位计算再转换回数字
++ |会将数字转换为位计算再转换回数字
 
-# 尽量不要使用浮点计算，最好使用integer
++ 尽量不要使用浮点计算，最好使用integer
+
 
 
 
@@ -123,10 +124,10 @@ if/||/&&操作符都可以执行boolean值，但接受所有的值，非boolean�
      typeof a === "undefined"
      a === undefined
 
-# +号既可以代表数学加法也可以代表字符串拼接
++ +号既可以代表数学加法也可以代表字符串拼接
 
-# object可以通过valueOf来定义数字值，通过toString来定义字符串值
++ object可以通过valueOf来定义数字值，通过toString来定义字符串值
 
-# Objects with valueOf methods should implement a toString method that provides a string representation of the number produced by valueOf.
++ Objects with valueOf methods should implement a toString method that provides a string representation of the number produced by valueOf.
 
-# 使用typeof来检查undefined
++ 使用typeof来检查undefined

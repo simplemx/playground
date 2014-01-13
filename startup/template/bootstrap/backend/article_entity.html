@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}
+    {% if is_edit %}
+    编辑文章
+    {% end %}
+    {% if not is_edit %}
+    新建文章
+    {% end %}
+{% end %}
+{% block content %}
+<div class="row">
+    <div class="col-sx-12">
+        <label for="title">标题</label>
+        <input type="text" id="title" {% if is_edit %}
+value="{{article.title}}"
+{% end %}/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sx-12">
+        <textarea id="content" name="" cols="30" rows="10">
+{% if is_edit %}
+{{article.content}}
+{% end %} 
+        </textarea>
+    </div>
+</div>
+
+{% end %}
+{% block js %}
+{% end %}

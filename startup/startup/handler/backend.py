@@ -153,6 +153,19 @@ class BackendArticleHandler(BaseBackendHandler):
             self.update("delete from st_article where article_id ='%s'" % article_id)
         self.renderMsg("提交成功")
         
+class BackendArticleEntityHandler(BaseBackendHandler):
+    @tornado.web.authenticated
+    def get(self):
+        article_id = self.get_argument("article_id", -1)
+        is_edit = False
+        article = None
+        if article_id > 0:
+            #edit
+            article = self.select("select article_id, name, content, create_date, modify_date from st_article where article_id='%s'" % article_id)
+            is_edit = True
+        self.render("backend/article_entity.html", is_edit = is_edit, article = article)
+
+
 handlers = [
     (r"/backend", BackendHandler),
     (r"/backendlogin", BackendLoginHandler),
@@ -162,5 +175,5 @@ handlers = [
     (r"/backenduser", BackendUserHandler),
     (r"/backendresource", BackendResourceHandler),
     (r"/backendarticle", BackendArticleHandler),
-    (r"/addarticle", BackendArticleHandler),
+    (r"/addarticle", BackendArticleEntityHandler),
         ]

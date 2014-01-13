@@ -162,8 +162,24 @@ class BackendArticleEntityHandler(BaseBackendHandler):
         if article_id > 0:
             #edit
             article = self.select("select article_id, name, content, create_date, modify_date from st_article where article_id='%s'" % article_id)
+            article = article[0]
             is_edit = True
         self.render("backend/article_entity.html", is_edit = is_edit, article = article)
+    
+    @tornado.web.authenticated
+    def post(self):
+        is_edit = self.get_argument("is_edit")
+        content = self.get_argument("content", "")
+        title = self.get_argument("title")
+        if is_edit == "True":
+            #edit
+            article_id = self.get_argument("article_id")
+            self.update("update st_article set name='%s', content='%s' where article_id = '%s'" % (title, content, article_id))
+        else:
+            admin = self.get_current_user()
+            admin_info = self.select("select admin_id from st_admin where admin_name='%s'" % admin)
+            self.update("insert into st_article(name, content, create_date, author_id)   values('%s','%s',now(), '%s')" % (title, content, admin_info[0]["admin_id"]))
+        self.renderMsg("提交成功")
 
 
 handlers = [
@@ -175,5 +191,5 @@ handlers = [
     (r"/backenduser", BackendUserHandler),
     (r"/backendresource", BackendResourceHandler),
     (r"/backendarticle", BackendArticleHandler),
-    (r"/addarticle", BackendArticleEntityHandler),
+    (r"/articleentity", BackendArticleEntityHandler),
         ]

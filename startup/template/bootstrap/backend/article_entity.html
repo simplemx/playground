@@ -8,24 +8,53 @@
     {% end %}
 {% end %}
 {% block content %}
-<div class="row">
-    <div class="col-sx-12">
-        <label for="title">标题</label>
-        <input type="text" id="title" {% if is_edit %}
-value="{{article.title}}"
-{% end %}/>
+<form id="submit_form" action="/articleentity" method="post" class="form-horizontal">
+    {% module xsrf_form_html() %}
+    <input type="hidden" name="is_edit" value="{{is_edit}}"/>
+    {% if is_edit %}
+    <input type="hidden" name="article_id" value="article.article_id"/>
+    {% end %}
+    <div class="form-group">
+        <div class="col-xs-12">
+            <label class="control-label h1" for="title">标题:</label>
+        </div>
+        <div class="col-xs-12">
+            <input class="form-control" name="title" type="text" id="title" 
+            {% if is_edit %}
+                value="{{article['name']}}"
+            {% end %}/>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sx-12">
-        <textarea id="content" name="" cols="30" rows="10">
-{% if is_edit %}
-{{article.content}}
-{% end %} 
-        </textarea>
+    <div class="form-group">
+        <div id="editor" class="col-xs-12"> 
+        </div>
     </div>
-</div>
-
+    <div class="hidden">
+        <textarea id="text-area" name="content" cols="30" rows="10"></textarea>
+    </div>
+    <div class="text-center">
+        <button id="btn_submit" class="btn btn-primary">保存</button>
+    </div>
+</form>
 {% end %}
 {% block js %}
+<script type="text/javascript" src="{{static_url("epiceditor/js/epiceditor.min.js")}}"></script>
+<script type="text/javascript">
+    var opts = {
+        container : "editor",
+                    basePath : "static/epiceditor",
+                    textarea : "text-area"
+    }
+    var editor = new EpicEditor(opts).load()
+    {% if is_edit %}
+        editor.importFile(null, "{{article['content']}}")
+    {% end %}
+    
+    $(function(){
+            $("#btn_submit").click(function(){
+                $("#submit_form").submit()    
+                })  
+
+    })
+</script>
 {% end %}

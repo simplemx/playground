@@ -43,7 +43,7 @@
 <script type="text/javascript">
     $(function(){
             $(".modify_btn").click(function(){
-                  
+                window.location.href=("/articleentity?article_id=" + $($(this).parent().parent().children()[0]).text()); 
             });
             $(".delete_btn").click(function(){
                 if (window.confirm("确认删除这个文章吗？")) {

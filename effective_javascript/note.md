@@ -131,3 +131,60 @@ if/||/&&操作符都可以执行boolean值，但接受所有的值，非boolean�
 + Objects with valueOf methods should implement a toString method that provides a string representation of the number produced by valueOf.
 
 + 使用typeof来检查undefined
+
+
+
+# Prefer Primitives to Object Wrappers
+
+JS有5种primitive value，分别是boolean/number/string/null/undefined。并且标准实现里为boolean/string/number提供了构造方法来进行包装。
+
+     var s = new String("hello world")
+
+But unlike primitive strings, a String object is a true object
+
+     typeof "hello";//"string"
+     typeof s;//"object"
+
+     var s1 = new String("t");
+     var s2 = new String("t");
+     s1 === s2 ;//false
+
+由于new之后的是一个全新的object，所以无论是==还是===都是不会相等的。
+
+primitive Object的最大作用是使用它们的工具函数，这些函数不但可以在primitive Object上使用，JS默认会对他们进行处理，就算在primitive values也可以使用。
+
+     "hello".toUpperCase();//"HELLO"
+
+在primitive values上调用上述这样的隐式转换时候，当设置属性的时候，primitive values是不会被影响的。上述的隐式转换会默认生成新的字符串对象，所以对之前的primitive value是没有影响的。在程序里如果不小心使用primitive values来修改变量，那么程序会继续执行，但错误不容易被发觉。
+
++ Object wrappers for primitive types do not have the same behavior as their primitive values when compared for equality
+--primitive values和它们的包装对象进行比较的时候是不同的，包装对象是全新的对象
+
++ Getting and setting properties on primitives implicitly creates object wrappers
+--在primitive values上赋值和获取属性都会隐式构造新的对象wrapper
+
+
+
+# Avoid using == with Mixed Types
+
+     "1.0e0" == { valueOf: function() { return true; } };
+
+上述的两个无相关对象，在JS里都会被应为是相等的，这两个对象都会转换为number对象，然后再进行比较，字符串转换为1，而valueOf为true的对象也是转换为1，所以是==的。
+
+这里可以通过明确转换为number，可以使用+号。
+
+     if (form.month.value == today.getMonth() + 1){}//需要开发人员理解怎么转换
+     if (+ form.month.value == today.getMonth() + 1){}//明确转换为number
+
+这样可以更加清晰的让代码容易理解。同理，还可以使用===
+
+     if (+ form.month.value === today.getMonth() + 1) {}//使用===
+
+当比较的对象类型相同的时候，使用==和使用===是一样的，但使用===让阅读者理解这里比较是没有使用类型转换的，这样让JS代码更清晰和减少陷阱。
+
++ ==操作符针对不同类型对象的比较的时候规则比较复杂混乱
+
++ 使用===操作符可以让比较操作更加清晰也更容易debug。
+
++ 使用自己的转换函数来为不同类型的对象转换为相同类型进行比较操作
+

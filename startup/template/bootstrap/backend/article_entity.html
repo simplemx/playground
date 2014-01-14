@@ -47,7 +47,7 @@
     }
     var editor = new EpicEditor(opts).load()
     {% if is_edit %}
-        editor.importFile(null, "{{article['content']}}")
+        editor.importFile(null, "{% raw article['content'] %}")
     {% end %}
     
     $(function(){

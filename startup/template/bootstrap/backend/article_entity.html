@@ -47,7 +47,8 @@
     }
     var editor = new EpicEditor(opts).load()
     {% if is_edit %}
-        editor.importFile(null, "{% raw article['content'] %}")
+    var content_list = {{"['"+ "','".join(article['content'].split("\r\n"))+"']"}}
+    editor.importFile(null, content_list.join("\r\n"))
     {% end %}
     
     $(function(){

@@ -188,3 +188,28 @@ primitive Object的最大作用是使用它们的工具函数，这些函数不�
 
 + 使用自己的转换函数来为不同类型的对象转换为相同类型进行比较操作
 
+
+
+
+# Minimize Use of the Global Object
+
++ 避免声明全局变量
+
++ 尽量使用局部变量
+
++ 减少为global object上设置属性的可能
+
++ 使用global object来进行平台支持与否的判断
+
+
+
+# Always declare local Variables
+
++ Always declare new local variables with var
+
++ Consider using lint tools to help check for unbound variables
+
+
+
+
+

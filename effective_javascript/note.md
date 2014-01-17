@@ -211,5 +211,26 @@ primitive Object的最大作用是使用它们的工具函数，这些函数不�
 
 
 
+# Understand Variable Hoisting
+
+Hosting是指在JS里变量的定义是会将定义hosting在最近的变量范围的开头，然后赋值会仍然放在那里。
+
+不过值得注意的是try catch语句里的catch范围里是另外一个block。
+
+     for (var i = 0, n = header.length; i < n; i++){...}
+
+is equal to:
+
+     var i, n;
+     for (i = 0, n = header.length; i < n; i++){...}
+
++ Variable declarations within a block are implicitly hoisted to the top of their enclosing function
+--在block范围内的变量声明隐式的会被host在函数范围内的最顶部
+
++ Redeclarations of a variable are treated as a single variable
+--重复声明的变量会被当做声明一个变量
+
++ Consider manually hoisting local variable declarations to avoid confusion
+--建议手工host局部变量声明来避免混淆
 
 

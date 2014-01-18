@@ -1,6 +1,7 @@
 #encoding=utf-8
 import tornado.web
 import os
+import markdown
 from startup.handler.handler import BaseHandler
 
 ##Frontend Handler begin
@@ -10,7 +11,9 @@ class BaseFrontendHandler(BaseHandler):
 
 class IndexHandler(BaseFrontendHandler):
     def get(self):
-        self.render("index.html")
+        ## get articles
+        articles = self.select("select article_id, name, create_date, modify_date from st_article order by article_id desc")
+        self.render("frontend/index.html", articles = articles)
 
 class LogoutHandler(tornado.web.RequestHandler):
     def post(self):
@@ -19,7 +22,7 @@ class LogoutHandler(tornado.web.RequestHandler):
 
 class LoginHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("login.html")
+        self.render("frontend/login.html")
     def post(self):
         "post login form"
         name = self.get_argument("name")
@@ -27,9 +30,21 @@ class LoginHandler(tornado.web.RequestHandler):
         self.set_secure_cookie("user", name, expires_days = 1)
         self.redirect("/")
 
+class ArticleHandler(BaseFrontendHandler):
+    def get(self):
+        article_id = self.get_argument("article_id")
+        article = self.select("select name, content from st_article where article_id ='%s'" % article_id)
+        if not article:
+            self.send_error(status_code=404)
+        else:
+            article = article[0]
+            article["content"] = markdown.markdown(article["content"])
+            self.render("frontend/article.html", article = article)
+
 handlers = [
     (r"/", IndexHandler),
     (r"/login", LoginHandler),
     (r"/doLogin", LoginHandler),
     (r"/logout", LogoutHandler),
+    (r"/article", ArticleHandler),
         ]

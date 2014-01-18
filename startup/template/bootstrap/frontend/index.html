@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}
+首页
+{% end %}
+{% block content %}
+<div class="container">
+    {% for article in articles %}
+    <h3><a href="/article?article_id={{article["article_id"]}}">{{article["name"]}}</a></h3>
+    {% end %}
+</div>
+{% end %}

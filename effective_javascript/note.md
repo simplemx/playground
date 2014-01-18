@@ -1,4 +1,4 @@
-### know which javascript you are using
+# know which javascript you are using
 
 ECMAScript3是在1999年定版，而ECMAScript5是在2009年定版。
 

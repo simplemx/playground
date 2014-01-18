@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>{% block title %}Startup Manager{% end %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">                
+        <link rel="shortcut icon" href="{{static_url("favicon.ico")}}" type="images/x-icon"/>
+        <link rel="Stylesheet" href="{{static_url("css/bootstrap/bootstrap.min.css")}}" type="text/css"/>
+        <link rel="Stylesheet" href="{{static_url("css/bootstrap/app.css")}}" type="text/css"/> 
+        {% block css %}
+        {% end %}
+    </head>
+    <body>
+        <header>
+        <div class="container">
+            <div class="row">
+                <form id="logout_form" action="/logout" method="post">
+		        {% module xsrf_form_html() %}
+		        </form>
+                <div class="col-sx-12 text-center col-sm-3 col-sm-offset-9">
+                {% if current_user is None %}
+		        <span>Please <a class="btn btn-default" role="button" href="/login">登陆</a></span>
+		        {% end %}
+		        {% if current_user is not None %}
+		        <span>
+		            您好!<b>{{current_user}}</b>
+		            <a href="" class="btn btn-default" role="button" onclick="javascript:document.getElementById('logout_form').submit();return false;">点我退出</a>
+		        </span>
+		        {% end %} 
+                </div>
+            </div>
+        </div>
+        </header>
+        <div class="container content">
+            {% block content %}
+            {% end %}
+        </div>
+        <script type="text/javascript" src="{{static_url("js/jquery-1.7.2.min.js")}}"></script>
+        <script type="text/javascript" src="{{static_url("js/bootstrap.js")}}"></script>
+        {% block js %}
+        {% end %}
+    </body>
+</html>
+

@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% block css %}
+<style type="text/css">
+    #editor {
+        min-height : 400px
+    }
+</style>
+{% end %}
 {% block title %}
     {% if is_edit %}
     编辑文章
@@ -19,7 +26,7 @@
             <label class="control-label h1" for="title">标题:</label>
         </div>
         <div class="col-xs-12">
-            <input class="form-control" name="title" type="text" id="title" 
+            <input class="form-control" name="title" type="text" id="title" placeholder = "请填写标题"
             {% if is_edit %}
                 value="{{article['name']}}"
             {% end %}/>
@@ -42,8 +49,11 @@
 <script type="text/javascript">
     var opts = {
         container : "editor",
-                    basePath : "static/epiceditor",
-                    textarea : "text-area"
+        basePath : "static/epiceditor",
+        textarea : "text-area"
+        {% if is_edit %}
+        , clientSideStorage : false
+        {% end %}
     }
     var editor = new EpicEditor(opts).load()
     {% if is_edit %}
@@ -52,10 +62,17 @@
     {% end %}
     
     $(function(){
-            $("#btn_submit").click(function(){
-                $("#submit_form").submit()    
-                })  
-
+        $("#btn_submit").click(function(){
+            if (!$("#title").val() || $("#title").val() === "") {
+                $($("#title").parent().parent()).addClass("has-error")
+                return false
+            }
+            if (!$("#text-area").val() || $("#text-area").val() === "") {
+                alert("请填写内容")
+                return false
+            }
+            $("#submit_form").submit()    
+        })
     })
 </script>
 {% end %}

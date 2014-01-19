@@ -234,3 +234,140 @@ is equal to:
 --建议手工host局部变量声明来避免混淆
 
 
+
+# Use Immediately Invoked Function Expressions to Create Local Scopes
+
+Closures store their outer variables by reference, not by value.闭包保存变量的引用，并不是保存他们的值。So:
+
+     function wrapElements(a) {
+          var result = [], i, n
+          for (i = 0, n = a.length; i < n; i++){
+               result[i] = function(){return a[i]}
+          }
+     }
+     var wrapped = wrapElements([1,2,3,4,5])
+     var f = wrapped[0]
+     f();//undefined, not 1,not 5
+
+上述需要注意的是所有匿名函数引用的i的闭包最后是变为a.length了，不是a.length-1，所以是undefined。并不是5。
+
+解决方案是建立一个内部作用域。
+
+     function wrapElements(a) {
+          var result = []
+          for (var i = 0, n = a.length; i < n; i++){
+               (function(){
+                    var j = i
+                    result[j] = function(){return a[j]}
+               })()
+          }
+     }
+
+这就是IFFE(immediately invoked function expression)，当然，也可以通过匿名函数传入参数的方式来达到目的。
+
++ Understand the difference between binding and assignment--理解闭包绑定和赋值的区别
+
++ Closures capture their outer variables by reference, not by value--闭包保留变量的引用，并不是值
+
++ Use immediately invoked function expressions (IIFEs) to create local scopes--使用IIFE来创建局部变量作用域
+
++ Be aware of the cases where wrapping a block in an IIFE can change its behavior--了解使用IIFE后this等情况和没有IIFE后的不同
+
+
+
+# Beware of Unportable Scoping of Named Function Expressions
+
+function declaration
+
+     function double(x){return x * 2}
+
+这个定义会在当前命名空间内定义一个函数，并且绑定到变量double上。
+
+named function expression
+
+     var f = function double(x) {return x * 2}
+     var f = function(x){return x * 2}
+
+上述的两个表达式会定义函数，然后绑定到f变量上。而named function expression里的函数名字只有在函数内部的范围内可以使用，离开函数外将不能访问。最大的用处就是递归的时候使用，但是就算是递归也可以使用外部绑定的变量f。
+
+JS引擎会将named function expression里返回命名空间当做object一样处理，它会继承Object.prototype对象。
+
+     var constructor = function(){return null}
+     var f = function f(){return constructor()}
+     f();//{}
+
+上述的f函数并不是返回null，因为named function expression继承了Object.prototype.constructor，所以默认的调用是调用这个函数，并不是上述声明的函数。对Object.prototype的任何变更都会在named function里受到影响。
+
++ Use named function expressions to improve stack traces in Error objects and debuggers--使用named function expression来为debug和错误的堆栈信息做友好提示
+
++ Beware of pollution of function expression scope with Object.prototype in ES3 and buggy JavaScript environments--named function expression会在自己的命名范围内继承Object.prototype
+
++ Beware of hoisting and duplicate allocation of named function expressions in buggy JavaScript environments--使用named function expression会为hosting和多余命名分配过多空间
+
++ Consider avoiding named function expressions or removing them before shipping--避免使用named function expression
+
++ If you are shipping in properly implemented ES5 environments, you’ve got nothing to worry about--ES5环境里已经修改了这些bug，无需担心
+
+
+
+# Beware of Unportable Scoping of Block-Local Function Declarations
+
+在函数内部再声明函数，和声明变量类似，都会host在命名空间最顶，所以这里会有一定的困惑性。
+
+     function f(){return 2}
+     function test(x){
+          var result = []
+          if (x) {
+               function f(){return 1}
+               result.push(f())
+          }
+          result.push(f())
+          return result
+     }
+
+上述的函数在不同的JS实现上会有出入，大多数会将在block范围内的f host在开头，但是也有实现是在执行block的时候才解析的。
+
+更好的方法是减少使用局部block内的函数声明，尽量在外层声明，在内部引用即可。
+
++ Always keep function declarations at the outermost level of a program or a containing function to avoid unportable behavior--在程序最外层或者函数范围最顶层声明函数，避免在内部来声明函数
+
++ Use var declarations with conditional assignment instead of conditional function declarations--使用var来作为if block内的函数重新定义，而不是直接声明
+
+
+
+# Avoid Creating Local Variables with eval
+
+使用eval会将传入的参数执行一遍，而如果利用eval来创建变量等是一个很容易引发bug的做法。因为eval既可以创建局部变量也可以创建全局变量，一切都视传入的参数和上下文决定。
+
++ Avoid creating variables with eval that pollute the caller’s scope--不要使用eval来创建变量
+
++ If eval code might create global variables, wrap the call in a nested function to prevent scope pollution--如果一定要用eval来新建变量，那么可以使用让eval执行在包装函数内的方式来避免全局变量被污染
+
+
+
+# Prefer Indirect eval to Direct eval The eval
+
+大多数函数都只有能访问定义时候的scope的权利，但是eval函数除了这个之外，还能访问它在被调用的时候的scope。
+
+eval的调用可以分为direct eval和indirect eval。
+
+     eval(param)
+
+这是direct eval。
+
+     var f = eval;
+     f(param)
+
+这是indirect eval。区别是indirect eval会将参数在global scope内执行。并不是和direct eval一样是在local scope内执行。
+
+一个更清晰的indirect eval写法是
+
+     (0, eval)(param)
+
+(0, eval)表达式首先执行0，然后执行eval，并且返回eval，并且将eval作为indirect eval来执行。
+
++ Wrap eval in a sequence expression with a useless literal to force the use of indirect eval--为eval包装在()表达式内来强调eval来使用indirect eval
+
++ Prefer indirect eval to direct eval whenever possible--尽量使用indirect eval
+
+

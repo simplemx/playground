@@ -371,3 +371,15 @@ eval的调用可以分为direct eval和indirect eval。
 + Prefer indirect eval to direct eval whenever possible--尽量使用indirect eval
 
 
+
+# Understand the Difference between Function, Method, and Constructor Calls
+
+JS里无论是function/method/contructor都是使用function。
+
+function就是普通函数，而method则使用this来获取绑定的对象，这个对象还有可能是全局对象，这样很容易出问题。
+
++ Method calls provide the object in which the method property is looked up as their receiver--调用method的时候会保证对象来作为接受者来调用
+
++ Function calls provide the global object (or undefined for strict functions) as their receiver. Calling methods with function call syntax is rarely useful--调用function的时候将全局对象作为接受者，而在strict mode里将会为undefined。将function来作为method来调用不会有什么作用。
+
++ Constructors are called with new and receive a fresh object as their receiver--contructor将会使用new关键字来调用，并且会创建一个全新的对象作为接受者来。

@@ -383,3 +383,141 @@ function就是普通函数，而method则使用this来获取绑定的对象，�
 + Function calls provide the global object (or undefined for strict functions) as their receiver. Calling methods with function call syntax is rarely useful--调用function的时候将全局对象作为接受者，而在strict mode里将会为undefined。将function来作为method来调用不会有什么作用。
 
 + Constructors are called with new and receive a fresh object as their receiver--contructor将会使用new关键字来调用，并且会创建一个全新的对象作为接受者来。
+
+
+
+# Get Comfortable Using Higher-Order Functions
+
++ Higher-order functions are functions that take other functions as arguments or return functions as their result--higher order function是那些函数将其他函数作为参数或者返回结果的函数
+
++ Familiarize yourself with higher-order functions in existing libraries--熟悉lib里的higher-order 函数
+
++ Learn to detect common coding patterns that can be replaced by higher-order functions--将重复代码抽象出去作为higher-order 函数。
+
+
+
+# Use call to Call Methods with a Custom Receiver
+
++ Use the call method to call a function with a custom receiver--使用call来调用function以及额外的function接受者
+
++ Use the call method for calling methods that may not exist on a given object--使用call函数来调用一个可能不存在的对象
+
++ Use the call method for defining higher-order functions that allow clients to provide a receiver for the callback--使用call函数来作为定义higher-order函数的定义个性化接受者的工具
+
+
+
+# Use apply to Call Functions with Different Numbers of Arguments
+
++ Use the apply method to call variadic functions with a computed array of arguments
+
++ Use the first argument of apply to provide a receiver for variadic methods
+
+
+
+# Use arguments to Create Variadic Functions
+
++ Use the implicit arguments object to implement variable-arity functions
+
++ Consider providing additional fixed-arity versions of the variadic functions you provide so that your consumers don’t need to use the apply method
+
+
+
+# Never Modify the arguments Object
+
+arguments看起来是一个array对象，但实际并不是。
+
+     function callMethod(obj, method) {
+          var shift = [].shift;
+          shift.call(arguments);
+          shift.call(arguments);
+          return obj[method].apply(obj, arguments);
+     }
+     var obj = {add : function(x, y){return x + y}}
+     callMethod(obj, "add", 17, 25);//error
+
+上述的代码执行错误是因为函数的参数，只是一个引用arguments对象里某个index的别名，obj是arguments[0]的别名，method是arguments[1]的别名，尽管我们通过shift函数将arguments对象里的前两个remove掉了，但是obj仍然是arguments[0]的别名，所以，obj[method]就是执行17[25]
+
+在ES5环境strict mode内，参数并不是arguments里某个index的别名，所以有下属的情况出现。
+
+     function strict(x) {
+          "use strict"
+          arguments[0] = "modify"
+          return x === arguments[0];//false
+     }
+     function nostrict(x) {
+          arguments[0] = "modify"
+          return x === arguments[0];//true
+     }
+
+所以不要改变arguments对象的值，另外可以使用[].slice来将arguments转变为真正的array。
+
+     var args = [].slice.call(arguments)
+
++ Never modify the arguments object
+
++ Copy the arguments object to a real array using [].slice.call(arguments) before modifying it--如果需要改变arguments对象，那么使用[].slice.call来将arguments转变为真正的array再进行改变
+
+
+
+# Use a Variable to Save a Reference to arguments
+
++ Be aware of the function nesting level when referring to arguments--在嵌套层次多的代码里要小心arguments对象实际使用的可能是嵌套函数里的
+
++ Bind an explicitly scoped reference to arguments in order to refer to it from nested functions--显式将arguments对象绑定到一个变量里来在嵌套函数里使用是更安全的做法
+
+
+
+# Use bind to Extract Methods with a Fixed Receiver
+
++ Beware that extracting a method does not bind the method’s receiver to its object--使用变量引用method的方式来要小心此时method的使用并没有绑定原来的receiver
+
++ When passing an object’s method to a higher-order function, use an anonymous function to call the method on the appropriate receiver--当将method传入到higher-order函数里的时候，可以构造匿名函数来达到使用正确的receiver的方式
+
++ Use bind as a shorthand for creating a function bound to the appropriate receiver--还可以使用bind使用正确的receiver
+
+
+
+# Use bind to Curry Functions
+
+bind函数除了绑定receiver之外，传入的其他多个参数会作为返回参数的默认参数返回一个新的函数。
+
+     var urls = paths.map(simpleURL.bind(null, "http", siteDomain));
+     //equal to 
+     var urls = paths.map(function(each){return simpleURL("http", siteDomain, each);});
+
++ Use bind to curry a function, that is, to create a delegating function with a fixed subset of the required arguments
+
++ Pass null or undefined as the receiver argument to curry a function that ignores its receiver
+
+
+
+# Prefer Closures to Strings for Encapsulating Code
+
+function很方便的可以存储变量以被后续使用，这样促成了higher-order functions。当然也可以让代码以string的方式传入到eval内。但是这个是个很容易出现问题的方式。
+
++ Never include local references in strings when sending them to APIs that execute them with eval--当将字符串传入eval的时候，不要在代码里定义局部变量
+
++ Prefer APIs that accept functions to call rather than strings to eval--使用function的方式来执行代码比使用string传入eval的方式更好
+
+
+
+# Avoid Relying on the toString Method of Functions
+
+function对象的toString方法可以返回该function的代码。但是在不同浏览器上有不同的实现，具体视实际浏览器实现而定，而且native代码页不会展示出来，闭包代码也不会被显示
+
++ JavaScript engines are not required to produce accurate reflections of function source code via toString--JS引擎不会保证一定会使用toString去反射function的源码
+
++ Never rely on precise details of function source, since different engines may produce different results from toString--不要依赖toString来获取准确的源代码
+
++ The results of toString do not expose the values of local variables stored in a closure--toString返回的代码没有显示闭包内的局部变量
+
++ In general, avoid using toString on functions--避免使用function的toString
+
+
+
+# Avoid Nonstandard Stack Inspection Properties
+
++ Avoid the nonstandard arguments.caller and arguments.callee, because they are not reliably portable--避免使用不标准的arguments.caller和arguments.callee。它们是不利于移植的
+
++ Avoid the nonstandard caller property of functions, because it does not reliably contain complete information about the stack--避免使用不标准的获取当前运行时堆栈的函数
+

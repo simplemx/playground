@@ -521,3 +521,15 @@ function对象的toString方法可以返回该function的代码。但是在不�
 
 + Avoid the nonstandard caller property of functions, because it does not reliably contain complete information about the stack--避免使用不标准的获取当前运行时堆栈的函数
 
+
+
+# Understand the Difference between prototype, getPrototypeOf, and __proto__
+
++ C.prototype determines the prototype of objects created by new C()--prototype决定了使用new构造的对象的prototype
+
++ Object.getPrototypeOf(obj) is the standard ES5 function for retrieving the prototype of an object--Object.getPrototypeOf是ES5标准的获取对象的prototype的方法
+
++ obj.__proto__ is a nonstandard mechanism for retrieving the prototype of an object--obj.__proto__不标准的获取对象prototype的方式
+
++ A class is a design pattern consisting of a constructor function and an associated prototype--JS里的class是constructor函数和prototype的融合
+

@@ -533,3 +533,19 @@ function对象的toString方法可以返回该function的代码。但是在不�
 
 + A class is a design pattern consisting of a constructor function and an associated prototype--JS里的class是constructor函数和prototype的融合
 
+
+
+# Prefer Object.getPrototypeOf to __proto__
+
++ Prefer the standards-compliant Object.getPrototypeOf to the nonstandard __proto__ property--使用标准的Object.getPrototypeOf，不要使用_proto_属性
+
++ Implement Object.getPrototypeOf in non-ES5 environments that support __proto__在不支持ES5的环境里自己实现Object.getPrototypeOf
+
+
+
+# Never Modify __proto__
+
++ Never modify an object’s __proto__ property--不要改变对象的__proto__属性
+
++ Use Object.create to provide a custom prototype for new objects--使用Object.create函数来提供个性化的对象原型
+

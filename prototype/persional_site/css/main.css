@@ -1,0 +1,28 @@
+header{
+    background-image : url("../img/header.jpg");
+    width : 100%;
+    background-repeat: no-repeat;
+    background-position: center 0;
+    background-size: cover;
+    text-align: center;
+    min-height: 400px;
+    overflow : hidden;
+    color : white;
+}
+header h1{
+    padding-top : 180px;
+}
+.content_panel {
+    padding-top : 20px;
+}
+.content_panel ul {
+    list-style : none;
+}
+#menu_area ul {
+    text-align : right;
+    font-size : 20px;
+}
+#main_content ul {
+    text-align : left;
+    font-size : 20px;
+}

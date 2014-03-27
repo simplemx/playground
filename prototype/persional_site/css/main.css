@@ -1,3 +1,10 @@
+@font-face{
+    font-family : DejaVuSansMono;
+    src : url('DejaVuSansMono.ttf');
+}
+body,h1,h2 {
+    font-family : DejaVuSansMono;
+}   
 header{
     background-image : url("../img/header.jpg");
     width : 100%;
@@ -20,9 +27,20 @@ header h1{
 }
 #menu_area ul {
     text-align : right;
-    font-size : 20px;
+    font-size : 21px;
 }
+/* title */
 #main_content ul {
     text-align : left;
-    font-size : 20px;
+    font-size : 28px;
+    font-weight : bold;
+}
+#main_content ul>li {
+    margin-bottom : 5px;
+}
+/* blog content */
+#main_content p {
+    font-size : 21px;
+    text-align : left;
+    margin-bottom : 20px;
 }

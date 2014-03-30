@@ -2,8 +2,12 @@
     font-family : DejaVuSansMono;
     src : url('DejaVuSansMono.ttf');
 }
+@font-face{
+    font-family : YaHeiConsolas;
+    src : url('YaHei.Consolas.1.11b.ttf');
+}
 body,h1,h2 {
-    font-family : DejaVuSansMono;
+    font-family : DejaVuSansMono, YaHeiConsolas;
 }   
 header{
     background-image : url("../img/header.jpg");
@@ -29,6 +33,37 @@ header h1{
     text-align : center;
     font-size : 21px;
 }
+#menu_area ul a{
+    -webkit-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out; /* Firefox 4 */
+	-webkit-transition: all .5s ease-in-out; /* Safari 和 Chrome */
+	-o-transition: all .5s ease-in-out;
+}
+#menu_area ul span {
+    display: inline-block;
+	overflow: hidden;
+	width: 0;
+	height: 0;
+	margin: 5px 1px 0 5px;
+	border-width: 6px;
+	border-style: solid dashed dashed;
+	border-color: #0069ca transparent transparent;
+	vertical-align: middle;
+	-webkit-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out; /* Firefox 4 */
+	-webkit-transition: all .5s ease-in-out; /* Safari 和 Chrome */
+	-o-transition: all .5s ease-in-out;
+}
+#menu_area a:hover span{
+    border-color: #2a6496 transparent transparent;
+	-webkit-transform: translate(0,-5px) rotate(-180deg);
+	transition: translate(0,-5px) rotate(-180deg);
+	-moz-transition: translate(0,-5px) rotate(-180deg); /* Firefox 4 */
+	-webkit-transition: translate(0,-5px) rotate(-180deg); /* Safari 和 Chrome */
+	-o-transition: translate(0,-5px) rotate(-180deg);
+}
 /* title */
 #main_content ul {
     text-align : left;
@@ -37,6 +72,13 @@ header h1{
 }
 #main_content ul>li {
     margin-bottom : 5px;
+}
+#main_content ul li a{
+     -webkit-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out; /* Firefox 4 */
+	-webkit-transition: all .5s ease-in-out; /* Safari 和 Chrome */
+	-o-transition: all .5s ease-in-out;
 }
 /* blog content */
 #main_content p {

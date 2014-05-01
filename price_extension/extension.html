@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Getting Started Extension's Popup</title>
+    <style type="text/css">
+        *{
+            margin : 0;
+            padding : 0;
+        }
+        body{
+            margin:10px auto 0;
+            width : 800px;
+            min-width : 800px;
+            font-size : 16px;
+        }
+        h2 {
+            font-size : 18px;
+        }
+        header {
+            width : 100%;
+            text-align : left;
+        }
+        a:link{
+            text-decoration : none;
+        }
+        #item_list {
+            margin : 0 20px;
+            list-style : none;
+        }
+        #item_list>li {
+            border-bottom : 1px solid gray;
+        }
+        .tab{
+            width : 100%;
+            display : none;
+        }
+        .current_tab {
+            display : block;
+            background-color : lightblue;
+        }
+        #tab_menu_list {
+            width : 100%;
+            overflow : hidden;
+            list-style : none;
+        }
+        #tab_menu_list>li{
+            float : left;
+            padding :0 10px;
+        }
+        #tab_menu_list a{
+            color : black;
+        }
+        #tab_menu_list>.current{
+            background-color : lightblue;
+        }
+        .price{
+            color : red;
+            font-size : 20px;
+        }
+    </style>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="extension.js"></script>
+  </head>
+  <body>
+      <header>
+          <ul id="tab_menu_list">
+              <li class="current" tab="price_change_tab"><a href="javascript:void(0);" id="sum">汇总</a></li>
+              <li tab="item_list_tab"><a id="detail" href="javascript:void(0);" >详细</a></li>
+          </ul>
+      </header> 
+      <div id="content">
+		  <div id="price_change_tab" class="tab current_tab">
+		      <ul id="detail_list">
+		      </ul> 
+		  </div>
+		  <div id="item_list_tab" class="tab">
+		      <ul id="item_list">
+		      </ul>
+		  </div>
+      </div>
+  </body>
+</html>

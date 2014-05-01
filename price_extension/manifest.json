@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+
+  "name": "Price Alert",
+  "description": "This extension alerts when price in z.cn changes.",
+  "version": "1.0",
+
+  "permissions": [
+    "http://z.cn/",
+    "http://www.amazon.cn/",
+    "http://pricealertbackend.appspot.com/"
+  ],
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "extension.html"
+  }
+}

@@ -50,6 +50,9 @@ var processLocalStorage = function(url, price) {
 
 var loadItem = function(index) {
     if (index >= urls.length) {
+        $("#item_list a").click(function(){
+            chrome.tabs.create({ url: $(this).attr("href") })
+        })
         return
     }
 
@@ -82,5 +85,6 @@ $(function(){
         })
         $("#" + $(this).attr("tab")).addClass("current_tab")
     })
+
     loadItem(0)    
 }) 

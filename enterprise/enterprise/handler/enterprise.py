@@ -1,8 +1,7 @@
 #encoding=utf-8
 import tornado.web
-from enterprise.handler.handler import BaseHandler
 
-class IndexHandler(BaseHandler):
+class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("index.html")
 

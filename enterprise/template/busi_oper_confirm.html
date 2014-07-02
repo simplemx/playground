@@ -7,7 +7,7 @@
     </ol>
     <h2>业务办理</h2>
 <ol class="ui-step ui-step-blue ui-step-3">
-    <li class="ui-step-start ui-step-active">
+    <li class="ui-step-start ui-step-done">
         <div class="ui-step-line">-</div>
         <div class="ui-step-icon">
             <i class="iconfont">&#xf02f;</i>
@@ -15,7 +15,7 @@
             <span class="ui-step-text">选择套餐</span>
         </div>
     </li>
-    <li >
+    <li class="ui-step-active">
         <div class="ui-step-line">-</div>
         <div class="ui-step-icon">
             <i class="iconfont">&#xf02f;</i>
@@ -32,47 +32,26 @@
         </div>
     </li>
 </ol>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>序号</th>
-            <th>名称</th>
-            <th>价钱</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for index, service in enumerate(services) %}
-        <tr>
-            <td>{{index+1}}</td>
-            <td>{{service["name"]}}</td>
-            <td>{{service["price"]}}元</td>
-            <td><button class="btn btn-default">选择</button></td>
-        </tr>
-        {% end %}
-    </tbody>
-</table>
 <form id="submit-form" action="/oper" method="POST" role="form">
     {% module xsrf_form_html() %}
-    <input type="hidden" name="service-id"></input> 
+    <div class="form-group">
+        <label for="cond1">确认信息</label>
+        <input placeholder="请输入信息" type="text" name="cond1" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="cond2">请输入信息2</label>
+        <input type="text" name="cond2" placeholder="请输入信息" class="form-control">
+    </div>
+    <button id="submit-btn" class="btn btn-default">提交</button>
 </form>
 {% end %}
 {% block js %}
 <script>
     $(function(){
-        $(".table").on("click", ".btn", function(){
-            var $form = $("#submit-form"),
-                service_id = $(this).parent().parent().children().first().text();
-                
-            $("input[name=service-id]", $form).val(service_id)
-            $form.submit()
-            return false
-            
-        }).on("click", "tr", function(){
-            alert("12")
+        $("#submit-form #submit-btn").click(function(){
+            $("submit-form").submit()
             return false
         })
     })
 </script>
 {% end %}
-

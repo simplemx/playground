@@ -17,7 +17,20 @@ class QueryHandler(EnterpriseHandler):
 
 class OperateHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("busi_oper.html")
+        services = [{
+                "name" : "service1",
+                "price" : "12",
+                "id" : "1"
+            },
+            {
+                "name" : "service2",
+                "price" : "13",
+                "id" : "2"
+                }]
+        self.render("busi_oper.html", services = services)
+    def post(self):
+        print self.get_argument("service-id")
+        self.render("busi_oper_confirm.html")
 
 handlers = [
     (r"/", EnterpriseHandler),

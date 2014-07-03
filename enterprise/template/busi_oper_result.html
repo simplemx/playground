@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}业务办理{% end %}
+{% block content %}
+    <ol class="breadcrumb">
+        <li><a href="/">首页</a></li>
+        <li class="active">业务办理</li>
+    </ol>
+    <h2>业务办理</h2>
+<ol class="ui-step ui-step-blue ui-step-3">
+    <li class="ui-step-start ui-step-done">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfont">&#xf02f;</i>
+            <i class="ui-step-number">1</i>
+            <span class="ui-step-text">选择套餐</span>
+        </div>
+    </li>
+    <li class="">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfont">&#xf02f;</i>
+            <i class="ui-step-number">2</i>
+            <span class="ui-step-text">办理套餐</span>
+        </div>
+    </li>
+    <li class="ui-step-end ui-step-active">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfont">&#xf02f;</i>
+            <i class="iconfont ui-step-number">&#xF029;</i>
+            <span class="ui-step-text">办理结果</span>
+        </div>
+    </li>
+</ol>
+<h4>
+    {{result_msg}}
+</h4>
+{% end %}

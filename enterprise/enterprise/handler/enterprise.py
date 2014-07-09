@@ -2,6 +2,12 @@
 import tornado.web
 
 class EnterpriseHandler(tornado.web.RequestHandler):
+    def render(self, template_name, **kwargs):
+        # set default ajax mode for ajax get requests
+        # ajax_mode = self.get_argument("_ajax_mode", False)
+        kwargs["_ajax_mode"] = self.get_argument("_ajax_mode", False)
+        super(EnterpriseHandler, self).render(template_name, **kwargs)
+
     def get(self):
         self.render("index.html")
     def renderMsg(self, msg):
@@ -15,7 +21,7 @@ class QueryHandler(EnterpriseHandler):
         print self.get_argument("cond2")
         self.renderMsg("成功")
 
-class OperateHandler(tornado.web.RequestHandler):
+class OperateHandler(EnterpriseHandler):
     def get(self):
         services = [{
                 "name" : "service1",

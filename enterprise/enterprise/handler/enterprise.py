@@ -1,17 +1,15 @@
 #encoding=utf-8
 import tornado.web
+import config
+import handler
 
-class EnterpriseHandler(tornado.web.RequestHandler):
+class EnterpriseHandler(handler.BaseHandler):
     def render(self, template_name, **kwargs):
         # set default ajax mode for ajax get requests
         # ajax_mode = self.get_argument("_ajax_mode", False)
         kwargs["_ajax_mode"] = self.get_argument("_ajax_mode", False)
+        kwargs["_uri"] = self.getRealURI(self.request.uri)
         super(EnterpriseHandler, self).render(template_name, **kwargs)
-
-    def get(self):
-        self.render("index.html")
-    def renderMsg(self, msg):
-        self.render("msg.html", msg = msg)
 
 class QueryHandler(EnterpriseHandler):
     def get(self):
@@ -23,17 +21,7 @@ class QueryHandler(EnterpriseHandler):
 
 class OperateHandler(EnterpriseHandler):
     def get(self):
-        services = [{
-                "name" : "service1",
-                "price" : "12",
-                "id" : "1"
-            },
-            {
-                "name" : "service2",
-                "price" : "13",
-                "id" : "2"
-                }]
-        self.render("busi_oper.html", services = services)
+        self.render("busi_oper.html", services = config.services)
 
 class OperateUserInfoHandler(EnterpriseHandler):
     def get(self):

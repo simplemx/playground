@@ -13,3 +13,12 @@ class BaseHandler(tornado.web.RequestHandler):
                 for key in each:
                     if each[key] is None:
                         each[key] = ""
+
+    def getRealURI(self, uri):
+        if "?" in uri:
+            return uri[:uri.index("?")]
+        return uri
+    def get(self):
+        self.render("index.html")
+    def renderMsg(self, msg):
+        self.render("msg.html", msg = msg)

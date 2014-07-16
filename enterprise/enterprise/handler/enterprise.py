@@ -3,6 +3,7 @@ import tornado.web
 import config
 import handler
 
+# base handler
 class EnterpriseHandler(handler.BaseHandler):
     def render(self, template_name, **kwargs):
         # set default ajax mode for ajax get requests

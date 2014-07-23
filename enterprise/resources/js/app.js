@@ -22,9 +22,10 @@ $(function(){
         //active li
         $this.addClass("active")
 
+		return false;
     })
 
-    $("#ui-content").on("click touchend", "form button[type=submit]", function(){
+    $("#ui-content").on("click touchend", "form button[type=submit], form input[type=submit]", function(){
         var $button = $(this)
 
         $button.attr("disabled", "disabled")
@@ -32,6 +33,6 @@ $(function(){
         var old_text = $button.text()
         $button.text("提交ing")
         
-        return false;
+        return true;
     })
 })

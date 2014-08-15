@@ -9,6 +9,35 @@ $(function(){
             append && $(containerSelector).html(data)
         })
     }
+	
+	window.addEventListener('popstate', function(e){
+		if (history.state){
+			var state = e.state;
+			$.ajaxGetHTML(state.url, "#ui-content")
+			document.title = state.title
+			onMenuStateChange(state.title)
+		} else {
+			// no state that means index page
+			$.ajaxGetHTML("/", "#ui-content")
+			document.title = "首页"
+			onMenuStateChange("首页")
+		}
+	}, false);
+
+	var onMenuStateChange = function(title){
+		var menu = $("#ui-sider-menu")
+		menu.children().removeClass("active")
+		if (title !== "首页") {
+			menu.children().each(function(index, elem){
+				var $elem = $(elem),
+					a_tag = $("a", $elem)
+				if (a_tag.text().trim() === title) {
+					$elem.addClass("active")
+					return false
+				}
+			})
+		}
+	}
 
     $("#ui-sider-menu").on("click touchend", "li", function(){
         var $this = $(this),
@@ -21,6 +50,16 @@ $(function(){
         $this.parent().children().removeClass("active")
         //active li
         $this.addClass("active")
+
+		//history state
+		var title = link_tag.text().trim()
+		var state = {
+			"title" : title,
+			"url" : href
+		}
+		history.pushState(state, title, href)
+		// title not set yet
+		document.title = title
 
 		return false;
     })

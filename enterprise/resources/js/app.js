@@ -24,6 +24,17 @@ $(function(){
 		}
 	}, false);
 
+	//for index page
+	if (history.replaceState) {
+		var title = document.title 
+		var url = "/"
+		var state = {
+			"title" : title,
+			"url" : url 
+		}
+		history.replaceState(state, title, url)
+	}
+
 	var onMenuStateChange = function(title){
 		var menu = $("#ui-sider-menu")
 		menu.children().removeClass("active")

@@ -9,23 +9,60 @@ $(function(){
             append && $(containerSelector).html(data)
         })
     }
-	
-	window.addEventListener('popstate', function(e){
-		if (history.state){
-			var state = e.state;
-			$.ajaxGetHTML(state.url, "#ui-content")
-			document.title = state.title
-			onMenuStateChange(state.title)
-		} else {
-			// no state that means index page
-			$.ajaxGetHTML("/", "#ui-content")
-			document.title = "首页"
-			onMenuStateChange("首页")
+
+	$.ajaxPost = function(options) {
+		var form_id = options["formId"],
+			url = options["url"],
+			method = options["method"],
+			data = options["data"],
+			callback = options["callback"];
+		var $form, $submit_btn;
+
+		if (!form_id && !url) {
+			alert("must need formId or url parameter!")
+			return false;
+		}	
+		if (form_id) {
+			$form = $("#" + form_id)	
 		}
-	}, false);
+		if ($form) {
+			if (!url) {
+				url = $form.attr("action")
+			}
+
+			if (!method) {
+				method = $form.attr("method")
+			}
+
+			$submit_btn = $("button[type=submit] input[type=submit]", $form)
+
+		}
+		
+		if (!url) 
+		$.ajax({
+type : method ? method.
+		})
+		
+	}
+	
+	if (window.addEventListener) {
+		window.addEventListener('popstate', function(e){
+			if (history.state){
+				var state = e.state;
+				$.ajaxGetHTML(state.url, "#ui-content")
+				document.title = state.title
+				onMenuStateChange(state.title)
+			} else {
+				// no state that means index page
+				$.ajaxGetHTML("/", "#ui-content")
+				document.title = "首页"
+				onMenuStateChange("首页")
+			}
+		}, false);
+	}
 
 	//for index page
-	if (history.replaceState) {
+	if (history && history.replaceState) {
 		var title = document.title 
 		var url = "/"
 		var state = {
@@ -83,6 +120,12 @@ $(function(){
         var old_text = $button.text()
         $button.text("提交ing")
         
-        return true;
+		// do ajax post
+		var $form = $("form", $button)
+		if ($form.length > 0) {
+			
+		} else {
+			return true;
+		}
     })
 })

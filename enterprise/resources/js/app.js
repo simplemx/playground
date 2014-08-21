@@ -10,7 +10,7 @@ $(function(){
         })
     }
 
-	$.ajaxPost = function(options) {
+	$.ajaxSumbit = function(options) {
 		var form_id = options["formId"],
 			url = options["url"],
 			method = options["method"],
@@ -36,13 +36,34 @@ $(function(){
 
 			$submit_btn = $("button[type=submit] input[type=submit]", $form)
 
+			data = $form.serialize() + (data ? "&" + data : "");
 		}
 		
-		if (!url) 
-		$.ajax({
-type : method ? method.
-		})
-		
+		if (!url) {
+			$.ajax({
+				"type" : method ? method : "POST",
+				"url" : url,
+				"data" : data,
+				"success" : (callback ? callback : function(){} ),
+				"beforeSend" : function(){
+					if ($submit_btn) {
+						$submit_btn.attr("disabled", "disabled")
+						$submit_btn.addClass("ui-loading")
+						var old_text = $submit_btn.text()
+						$submit_btn.attr("old_text", old_text)
+						$submit_btn.text("提交ing")
+					}
+				},
+				"complete" : function(){
+					if ($submit_btn) {
+						$submit_btn.removeAttr("disabled")
+						$submit_btn.removeClass("ui-loading")
+						var old_text = $submit_btn.attr("old_text")
+						$submit_btn.text(old_text)
+					}
+				}
+			})
+		}
 	}
 	
 	if (window.addEventListener) {
@@ -123,7 +144,8 @@ type : method ? method.
 		// do ajax post
 		var $form = $("form", $button)
 		if ($form.length > 0) {
-			
+			$.ajaxSumbit()
+			return false;	
 		} else {
 			return true;
 		}

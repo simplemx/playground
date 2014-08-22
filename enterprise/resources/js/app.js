@@ -15,15 +15,20 @@ $(function(){
 			url = options["url"],
 			method = options["method"],
 			data = options["data"],
+			form = options["form"],
+			$submit_btn = options["submit_btn"],
 			callback = options["callback"];
-		var $form, $submit_btn;
+		var $form;
 
-		if (!form_id && !url) {
-			alert("must need formId or url parameter!")
+		if (!form_id && !url && !form) {
+			alert("must need formId or url or form parameter!")
 			return false;
 		}	
-		if (form_id) {
+		if (form_id && !form) {
 			$form = $("#" + form_id)	
+		}
+		if (form) {
+			$form = form
 		}
 		if ($form) {
 			if (!url) {
@@ -34,8 +39,9 @@ $(function(){
 				method = $form.attr("method")
 			}
 
-			$submit_btn = $("button[type=submit] input[type=submit]", $form)
-
+			if (!$submit_btn) {
+				$submit_btn = $("button[type=submit],input[type=submit]", $form)
+			}
 			data = $form.serialize() + (data ? "&" + data : "");
 		}
 		
@@ -56,7 +62,7 @@ $(function(){
 				},
 				"complete" : function(){
 					if ($submit_btn) {
-						$submit_btn.removeAttr("disabled")
+						$submit_btn.removeAttr("data-clicked")
 						$submit_btn.removeClass("ui-loading")
 						var old_text = $submit_btn.attr("old_text")
 						$submit_btn.text(old_text)
@@ -135,16 +141,23 @@ $(function(){
 
     $("#ui-content").on("click touchend", "form button[type=submit], form input[type=submit]", function(){
         var $button = $(this)
+		
+		if ($button.attr("data-clicked") === "clicked") {
+			return false;
+		}
 
-        $button.attr("disabled", "disabled")
+        $button.attr("data-clicked", "clicked")
         $button.addClass("ui-loading")
         var old_text = $button.text()
         $button.text("提交ing")
         
 		// do ajax post
-		var $form = $("form", $button)
+		var $form = $button.parent("form")
 		if ($form.length > 0) {
-			$.ajaxSumbit()
+			$.ajaxSumbit({
+				"form" : $form,
+				"submit_btn" : $button	
+			})
 			return false;	
 		} else {
 			return true;

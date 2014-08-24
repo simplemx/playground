@@ -10,6 +10,14 @@ $(function(){
         })
     }
 
+	$.ajaxSumbitHTML = function(options) {
+		options["dataType"] = "html"
+		if (!options["zoneId"]) {
+			options["zoneId"] = "busi-content"
+		}
+		$.ajaxSumbit(options)
+	}
+
 	$.ajaxSumbit = function(options) {
 		var form_id = options["formId"],
 			url = options["url"],
@@ -17,7 +25,9 @@ $(function(){
 			data = options["data"],
 			form = options["form"],
 			$submit_btn = options["submit_btn"],
-			callback = options["callback"];
+			callback = options["callback"],
+			dataType = options["dataType"] ?  options["dataType"] : "json",
+			zoneId = options["zoneId"];
 		var $form;
 
 		if (!form_id && !url && !form) {
@@ -42,18 +52,24 @@ $(function(){
 			if (!$submit_btn) {
 				$submit_btn = $("button[type=submit],input[type=submit]", $form)
 			}
-			data = $form.serialize() + (data ? "&" + data : "");
+			data = $form.serialize() + (data ? "&" + data : "") + "&_ajax_mode=true";
 		}
 		
-		if (!url) {
+		if (url) {
 			$.ajax({
 				"type" : method ? method : "POST",
 				"url" : url,
 				"data" : data,
-				"success" : (callback ? callback : function(){} ),
+				"dataType" : dataType,
+				"success" : function(result){
+					if (zoneId) {
+						$("#" + zoneId).html(result);
+					}
+					(callback ? callback : function(){} )(result)
+				},
 				"beforeSend" : function(){
 					if ($submit_btn) {
-						$submit_btn.attr("disabled", "disabled")
+						$submit_btn.attr("data-clicked", "clicked")
 						$submit_btn.addClass("ui-loading")
 						var old_text = $submit_btn.text()
 						$submit_btn.attr("old_text", old_text)
@@ -141,20 +157,15 @@ $(function(){
 
     $("#ui-content").on("click touchend", "form button[type=submit], form input[type=submit]", function(){
         var $button = $(this)
-		
+		// clicked
 		if ($button.attr("data-clicked") === "clicked") {
 			return false;
 		}
 
-        $button.attr("data-clicked", "clicked")
-        $button.addClass("ui-loading")
-        var old_text = $button.text()
-        $button.text("提交ing")
-        
 		// do ajax post
 		var $form = $button.parent("form")
 		if ($form.length > 0) {
-			$.ajaxSumbit({
+			$.ajaxSumbitHTML({
 				"form" : $form,
 				"submit_btn" : $button	
 			})

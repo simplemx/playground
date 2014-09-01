@@ -13,7 +13,7 @@ $(function(){
 	$.ajaxSumbitHTML = function(options) {
 		options["dataType"] = "html"
 		if (!options["zoneId"]) {
-			options["zoneId"] = "busi-content"
+			options["zoneId"] = "ui-content"
 		}
 		$.ajaxSumbit(options)
 	}

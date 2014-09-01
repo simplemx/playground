@@ -61,11 +61,17 @@
 <script>
     $(function(){
         $(".table").on("click", ".btn", function(){
-            var $form = $("#submit-form"),
-                service_id = $(this).parent().parent().children().first().text();
+			var $form = $("#submit-form"),
+				$btn = $(this),
+                service_id = $btn.parent().parent().children().first().text();
                 
             $("input[name=service-id]", $form).val(service_id)
-            $form.submit()
+
+			$.ajaxSumbitHTML({
+				submit_btn : $btn,
+				form : $form
+			})
+            //$form.submit()
             return false
             
         }).on("click", "tr", function(){

@@ -107,7 +107,7 @@ $(function(){
 	//for index page
 	if (history && history.replaceState) {
 		var title = document.title 
-		var url = "/"
+		var url = window.location.pathname 
 		var state = {
 			"title" : title,
 			"url" : url 

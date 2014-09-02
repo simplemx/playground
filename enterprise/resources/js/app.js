@@ -157,9 +157,15 @@ $(function(){
 
     $("#ui-content").on("click touchend", "form button[type=submit], form input[type=submit]", function(){
         var $button = $(this)
+
 		// clicked
 		if ($button.attr("data-clicked") === "clicked") {
 			return false;
+		}
+
+		// confirm msg dialog
+		if ($button.data("need-confirm") === "true") {
+			
 		}
 
 		// do ajax post

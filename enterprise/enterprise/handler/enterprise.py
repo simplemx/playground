@@ -35,10 +35,14 @@ class OperateUserInfoHandler(EnterpriseHandler):
         print ("%s %s %s" % (service_id, cond1, cond2))
         self.render("busi_oper_result.html", result_msg = "成功")
 
+class OperateConfirmHandler(EnterpriseHandler):
+	def get(self):
+		self.render("busi_oper_confirm.html")
 handlers = [
     (r"/", EnterpriseHandler),
     (r"/querybusi", QueryHandler),
     (r"/operatebusi", OperateHandler),
     (r"/operatebusi/userinfo", OperateUserInfoHandler),
+	(r"/operatebusiconfirm", OperateConfirmHandler),
         ]
 

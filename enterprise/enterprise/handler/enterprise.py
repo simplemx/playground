@@ -38,6 +38,8 @@ class OperateUserInfoHandler(EnterpriseHandler):
 class OperateConfirmHandler(EnterpriseHandler):
 	def get(self):
 		self.render("busi_oper_confirm.html")
+	def post(self):
+		self.renderMsg("成功")
 handlers = [
     (r"/", EnterpriseHandler),
     (r"/querybusi", QueryHandler),

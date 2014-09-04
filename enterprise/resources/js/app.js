@@ -32,11 +32,15 @@ $(function(){
 			popup_text,
 			need_mask = true,
 			need_confirm = false,
+			confirm_callback,
+			confirm_fn,
+			$submit_btn,
 			$popup;
 		if (typeof arguments[0] !== "object") {
 			popup_selector = arguments[0]
 			popup_text = arguments[1]
 			need_confirm = arguments[2]
+			confirm_callback = arguments[3]
 		} else {
 			popup_selector = arguments["popup_selector"]
 			popup_text = arguments["popup_text"]
@@ -45,6 +49,9 @@ $(function(){
 			}
 			if (arguments["need_confirm"]) {
 				need_confirm = true
+			}
+			if (arguments["confirm_callback"]) {
+				confirm_callback = arguments["confirm_callback"]
 			}
 		}
 		
@@ -57,7 +64,17 @@ $(function(){
 			$(".ui-tipbox-title", $popup).text(popup_text)
 		}
 		if (need_confirm) {
-			$(".fn-hide", $popup).show()
+			$submit_btn = $(".fn-hide", $popup)
+			confirm_fn = function(){
+				$.hidePopup(popup_selector)
+				if (confirm_callback) {
+					return confirm_callback()
+				} else {
+					return true;
+				}
+			}
+			$submit_btn.unbind("click").bind("click", confirm_fn)
+			$submit_btn.show()
 		}
 		$popup.show()
 
@@ -227,22 +244,28 @@ $(function(){
 			return false;
 		}
 
-		// confirm msg dialog
-		if ($button.data("need-confirm")) {
-			
-			return false;
+		
+		var submit_form = function(){
+			// do ajax post
+			var $form = $button.parent("form")
+			if ($form.length > 0) {
+				$.ajaxSumbitHTML({
+					"form" : $form,
+					"submit_btn" : $button	
+				})
+				return false;	
+			} else {
+				return true;
+			}
 		}
 
-		// do ajax post
-		var $form = $button.parent("form")
-		if ($form.length > 0) {
-			$.ajaxSumbitHTML({
-				"form" : $form,
-				"submit_btn" : $button	
-			})
-			return false;	
-		} else {
-			return true;
+		// confirm msg dialog
+		if ($button.data("need-confirm")) {
+			$.showPopup("#popup", "请问是否提交呢?", true, submit_form)		
+			return false;
 		}
+		
+		return submit_btn()
+		
     })
 })

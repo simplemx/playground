@@ -41,7 +41,38 @@ header {
         }
     }
 }
+.ui-popup-wrap {
+	z-index:99990;
+	position:fixed;
+	*position:absolute;
+	width:100%;
+	top:0px;
+	left:0px;
+}
 
+.ui-popup-wrap .ui-tipbox.ui-tipbox-pop {
+	margin : 100px auto;
+	width : 400px;
+	height : auto;
+	border : none;
+	padding : 45px 20px 20px 0;
+}
+.ui-popup-background {
+	z-index:9999;
+	position:absolute;
+	filter:alpha(opacity=70);
+	width:100%;
+	background:#666;
+	top:0;
+	left:0;
+	opacity:.7;
+	-moz-opacity:.7;
+	-khtml-opacity:.7;
+}
+
+.ui-button.fn-hide{
+	display : none;
+}
 @media (max-width: 992px) {
     .container {
         #ui-content {

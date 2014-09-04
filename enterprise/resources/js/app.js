@@ -1,4 +1,68 @@
 $(function(){
+	$.showMask = function() {
+		var backgrounds = $(".ui-popup-background"),
+			body = document.body,
+    		html = document.documentElement;
+
+		var height = Math.max( body.scrollHeight, body.offsetHeight, 
+                       html.clientHeight, html.scrollHeight, html.offsetHeight,
+                       $(window).height());
+		
+		if (backgrounds.length > 0) {
+			backgrounds.css("height", height + "px")
+			backgrounds.show()
+					
+		} else {
+			
+			$("<div>")
+			.attr("class", "ui-popup-background")
+			.css("height", height + "px")
+			.appendTo(document.body)
+			
+		}
+	}
+	$.hidePopup = function(selector){
+		$(".ui-popup-background").hide()
+		var $popup =  $(selector)
+		$(".fn-hide", $popup).hide()
+		$popup.hide()
+	}
+	$.showPopup = function() {
+		var popup_selector,
+			popup_text,
+			need_mask = true,
+			need_confirm = false,
+			$popup;
+		if (typeof arguments[0] !== "object") {
+			popup_selector = arguments[0]
+			popup_text = arguments[1]
+			need_confirm = arguments[2]
+		} else {
+			popup_selector = arguments["popup_selector"]
+			popup_text = arguments["popup_text"]
+			if (!arguments["need_mask"]) {
+				need_mask = false
+			}
+			if (arguments["need_confirm"]) {
+				need_confirm = true
+			}
+		}
+		
+		if (need_mask) {
+			$.showMask()
+		}
+
+		$popup = $(popup_selector)
+		if (popup_text) {
+			$(".ui-tipbox-title", $popup).text(popup_text)
+		}
+		if (need_confirm) {
+			$(".fn-hide", $popup).show()
+		}
+		$popup.show()
+
+	}
+
     $.ajaxGetHTML = function(url, containerSelector, success) {
         $(containerSelector).html("<div class='ui-loading'>正在努力加载中...</div>")
         $.get(url, "_ajax_mode=true", function(data){
@@ -164,8 +228,9 @@ $(function(){
 		}
 
 		// confirm msg dialog
-		if ($button.data("need-confirm") === "true") {
+		if ($button.data("need-confirm")) {
 			
+			return false;
 		}
 
 		// do ajax post

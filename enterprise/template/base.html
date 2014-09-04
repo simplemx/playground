@@ -117,6 +117,23 @@
             </div>
         </div>
     </footer>
+	<div id="popup" class="ui-popup-wrap fn-hide">
+		<div class="ui-tipbox ui-tipbox-message ui-tipbox-pop">
+			<div class="ui-tipbox-icon">
+				<div class="ui-tipbox-error-logo"></div>
+			</div>
+			<div class="ui-tipbox-content">
+			<h3 class="ui-tipbox-title">
+
+			</h3>
+			<p class="ui-tipbox-explain">
+				<input type="button" value="提 交" class="ui-button ui-button-lblue fn-hide"/>
+				<input type="button" value="取 消" class="ui-button ui-button-ldisable"
+					onclick="javascript:$.hidePopup('#popup');return false;"/>
+			</p>
+		</div>
+	</div>
+</div>
     <!-- scripts bottom start -->
     <script src="{{static_url("lib/less/1.7.3/less-1.7.3.min.js")}}" type="text/javascript"></script>
     <script src="{{static_url("lib/jquery/1.11.0/jquery.min.js")}}" type="text/javascript"></script>

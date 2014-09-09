@@ -1,3 +1,69 @@
-header .container{
-    background : url(images/air.png) repeat; 
+@charset "UTF-8";
+ul {
+  list-style: none;
 }
+header .container {
+  background: url("images/air.png") repeat;
+}
+.container {
+  background-color: white;
+}
+.container #ui-content {
+  margin: 10px 0;
+}
+.container #ui-content #index_logo {
+  background: url("images/700_190.png") no-repeat;
+  width: 700px;
+  height: 190px;
+}
+.container #ui-content .ui-loading {
+  background: url("images/waiting.gif") no-repeat 10px center;
+  width: 100%;
+  text-align: left;
+  padding-left: 36px;
+  font-size: 14px;
+}
+.container #ui-content button.ui-loading {
+  background: url("images/waiting.gif") no-repeat 5px center;
+  padding-left: 22px;
+  width: auto;
+  height: auto;
+}
+.ui-popup-wrap {
+  z-index: 99990;
+  position: fixed;
+  *position: absolute;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+}
+.ui-popup-wrap .ui-tipbox.ui-tipbox-pop {
+  margin: 100px auto;
+  width: 400px;
+  height: auto;
+  border: none;
+  padding: 45px 20px 20px 0;
+}
+.ui-popup-background {
+  z-index: 9999;
+  position: absolute;
+  filter: alpha(opacity=70);
+  width: 100%;
+  background: #666;
+  top: 0;
+  left: 0;
+  opacity: .7;
+  -moz-opacity: .7;
+  -khtml-opacity: .7;
+}
+.ui-button.fn-hide {
+  display: none;
+}
+@media (max-width: 992px) {
+  .container #ui-content #index_logo {
+    background: url("images/300_190.png") no-repeat;
+    width: 300px;
+    height: 190px;
+  }
+}
+

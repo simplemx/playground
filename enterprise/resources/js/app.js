@@ -1,4 +1,11 @@
 $(function(){
+	if(typeof String.prototype.trim !== 'function') {
+		String.prototype.trim = function() {
+			return $.trim(this)
+			//this.replace(/^\s+|\s+$/g, ''); 
+		}
+	}
+	
 	$.showMask = function() {
 		var backgrounds = $(".ui-popup-background"),
 			body = document.body,

@@ -15,7 +15,13 @@
 	<!-- styles start -->
     <link href="{{static_url("lib/alice/alice.css")}}" rel="stylesheet">
     <link href="{{static_url("lib/bootstrap/3.1.1/css/bootstrap.min.css")}}" rel="stylesheet">
-    <link href="{{static_url("css/main.less")}}" rel="stylesheet/less">
+	<!--[if IE]>
+		<link href="{{static_url("css/main.css")}}" rel="stylesheet">
+	<![endif]-->
+	<!--[if !IE]>
+		<!--><link href="{{static_url("css/main.less")}}" rel="stylesheet/less"><!-->
+	<![endif]-->
+
     {% block css %}
     {% end %}
     <!-- styles end -->
@@ -134,8 +140,11 @@
 		</div>
 	</div>
 </div>
-    <!-- scripts bottom start -->
-    <script src="{{static_url("lib/less/1.7.3/less-1.7.3.min.js")}}" type="text/javascript"></script>
+	<!-- scripts bottom start -->
+	<!--[if !IE]>
+	<!--><script src="{{static_url("lib/less/1.7.3/less-1.7.3.min.js")}}" type="text/javascript"></script><!-->
+	<![endif]-->
+    
     <script src="{{static_url("lib/jquery/1.11.0/jquery.min.js")}}" type="text/javascript"></script>
     <script src="{{static_url("lib/bootstrap/3.1.1/js/bootstrap.min.js")}}" type="text/javascript"></script>
     <script src="{{static_url("js/app.js")}}"></script>

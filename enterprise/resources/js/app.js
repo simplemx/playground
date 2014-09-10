@@ -230,15 +230,17 @@ $(function(){
         //active li
         $this.addClass("active")
 
-		//history state
-		var title = link_tag.text().trim()
-		var state = {
-			"title" : title,
-			"url" : href
+		if (history && history.pushState) {
+			//history state
+			var title = link_tag.text().trim()
+			var state = {
+				"title" : title,
+				"url" : href
+			}
+			history.pushState(state, title, href)
+			// title not set yet
+			document.title = title
 		}
-		history.pushState(state, title, href)
-		// title not set yet
-		document.title = title
 
 		return false;
     })
@@ -272,7 +274,7 @@ $(function(){
 			return false;
 		}
 		
-		return submit_btn()
+		return submit_form()
 		
     })
 })

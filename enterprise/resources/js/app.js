@@ -176,7 +176,7 @@ $(function(){
 		}
 	}
 	
-	if (window.addEventListener) {
+	if (window.addEventListener && Modernizr.history) {
 		window.addEventListener('popstate', function(e){
 			if (history.state){
 				var state = e.state;
@@ -190,10 +190,7 @@ $(function(){
 				onMenuStateChange("首页")
 			}
 		}, false);
-	}
 
-	//for index page
-	if (history && history.replaceState) {
 		var title = document.title 
 		var url = window.location.pathname 
 		var state = {
@@ -230,7 +227,7 @@ $(function(){
         //active li
         $this.addClass("active")
 
-		if (history && history.pushState) {
+		if (Modernizr.history) {
 			//history state
 			var title = link_tag.text().trim()
 			var state = {

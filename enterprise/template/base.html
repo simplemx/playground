@@ -1,6 +1,6 @@
 {% if not _ajax_mode %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Lesus{% end %}</title>
@@ -141,6 +141,7 @@
 	</div>
 </div>
 	<!-- scripts bottom start -->
+	<script src="{{static_url("lib/modernizr/2.8.3/modernizr.custom.06443.js")}}"></script>
 	<!--[if !IE]>
 	<!--><script src="{{static_url("lib/less/1.7.3/less-1.7.3.min.js")}}" type="text/javascript"></script><!-->
 	<![endif]-->

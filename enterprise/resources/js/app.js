@@ -1,3 +1,4 @@
+// submit for github for windows
 $(function(){
 	(function() {
 		var method;

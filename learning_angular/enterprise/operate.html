@@ -1,0 +1,22 @@
+<table>
+	<thead>
+		<tr>
+			<td>序号</td>
+			<td>名称</td>
+			<td>描述</td>
+			<td>操作</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="elem in planList">
+			<td>{{elem.id}}</td>
+			<td>{{elem.name}}</td>
+			<td>{{elem.desc}}</td>
+			<td><button ng-click="operate(elem)">办理</button></td>
+		</tr>
+
+	</tbody>
+</table>
+<div ng-show="operatePlan !== null">
+	{{operatePlan.name}}:{{operatePlan.desc}}
+</div>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Enterprise</title>
+</head>
+<body>
+	<div ng-app="enterprise" ng-controller="AppCtrl">
+		<div ng-show="isLoading">加载中</div>
+		<ul class="ui-menu" ng-controller="MenuCtrl">
+			<li ng-repeat="menu in menus">
+				<a ng-href="#{{menu.url}}">{{menu.name}}</a>
+			</li>
+		</ul>
+		<div ng-view></div>
+	</div>
+	
+	<script src="angular.js"></script>
+	<script src="angular-route.min.js"></script>
+	<script>
+		/*var menus = [
+			{
+				id : 0,
+				name : "index",
+				url : "/"
+			},
+			{
+				id : 1,
+				name : "menu1",
+				url : "/query"
+			},
+			{
+				id : 2,
+				name : "menu2",
+				url : "/operate"
+			}
+		]*/
+
+		angular.module('SharedServices', [])
+    .config(function ($httpProvider) {
+        $httpProvider.responseInterceptors.push('myHttpInterceptor');
+        var spinnerFunction = function (data, headersGetter) {
+            isLoading = true
+            alert(isLoading)
+            return data;
+        };
+        $httpProvider.defaults.transformRequest.push(spinnerFunction);
+    })
+// register the interceptor as a service, intercepts ALL angular ajax http calls
+    .factory('myHttpInterceptor', function ($q, $window) {
+        return function (promise) {
+            return promise.then(function (response) {
+                // do something on success
+                // todo hide the spinner
+                //alert('stop spinner');
+                alert(isLoading)
+                isLoading = false
+                return response;
+
+            }, function (response) {
+                // do something on error
+                // todo hide the spinner
+                isLoading = false
+                return $q.reject(response);
+            });
+        };
+    });
+
+		var app = angular.module('enterprise', ["ngRoute", "SharedServices"])
+		
+		app.config(function($routeProvider, $locationProvider){
+			
+			//$locationProvider.html5Mode(true)
+
+			$routeProvider
+			.when("/", {
+				controller : "IndexCtrl",
+				templateUrl : "index.html"
+			})
+			.when("/query", {
+				controller : "QueryCtrl",
+				templateUrl : "query.html"
+			})
+			.when("/queryList", {
+				controller : "QueryCtrl",
+				templateUrl : "queryList.html"
+			})
+			.when("/operate", {
+				controller : "OperateCtrl",
+				templateUrl : "operate.html",
+				resolve: {
+					planList: function($q, $http) {
+						var delay = $q.defer()
+						$http.get("http://localhost:8888/busiList").success(function(data){
+							delay.resolve(data)
+						})
+						return delay.promise;
+					}
+				}
+			})
+			.otherwise({
+				redirectTo : "/"
+			})
+		})
+
+		app.controller("AppCtrl", function($scope){
+			$scope.isLoading = false
+		})
+
+		app.controller("MenuCtrl", function($scope, $http){
+			$http.get("http://localhost:8888/menus").success(function(data){
+				$scope.menus = data
+			})
+		})
+
+		app.controller("IndexCtrl", function($scope){
+
+		})
+		app.controller("QueryCtrl", function($scope){
+			$scope.result = [
+				{
+					id : 1,
+					name : "name1",
+					desc : "desc"
+				},
+				{
+					id : 2,
+					name : "name2",
+					desc : "desc"
+				}
+			]
+		})
+		app.controller("OperateCtrl", function($scope, planList){
+			$scope.planList = planList 
+			/*[
+				{
+					id : 1,
+					name : "name1",
+					desc : "desc"
+				},
+				{
+					id : 2,
+					name : "name2",
+					desc : "desc"
+				}
+			]*/
+			$scope.operatePlan = null
+			$scope.operate = function(plan) {
+				$scope.operatePlan = plan;
+			}
+		})
+
+	</script>
+</body>
+</html>

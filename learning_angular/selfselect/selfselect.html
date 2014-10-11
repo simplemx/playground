@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SelfSelect</title>
+</head>
+<body ng-app="selfSelect">
+	<div ng-controller="SelfSelectCtrl" class="container">
+		<h4>请选择</h4>
+		<ul class="tab">
+			<li ng-repeat="plan in selfSelectConfigList | orderBy:'sort'" ng-click="clickTab($index)">
+				{{plan.name}}
+			</li>
+		</ul>
+		<div class="tab-content" ng-show="showPlan === plan" ng-repeat="plan in selfSelectConfigList | orderBy:'sort'">
+			<h5>请选择{{plan.name}}</h5>
+
+			<ul class="plan-list" ng-repeat="group in plan.planList">
+				<li ng-repeat="prod in group | orderBy : 'id'" ng-click="selectProd($parent.$parent.$index, $parent.$index, $index)" ng-mouseover="hoverProd=prod" ng-mouseleave="hoverProd=null">
+					<div ng-show="hoverProd !== prod">
+						{{prod.name}}
+					</div>
+					<div ng-show="hoverProd === prod">
+						{{prod.money}} : {{prod.desc}}
+					</div>
+					<div ng-show="prod.isSelected">
+						已选中
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<form action="">
+			<div ng-repeat="plan in selfSelectConfigList">
+				<h5>选中的{{plan.name}}:</h5>
+				<input type="text" ng-readonly="true" ng-repeat="group in plan.planList">
+			</div>
+			<h6>
+				您选择了：
+					{{selected[0]}}:
+					{{selected[1]}}:
+					{{selected[2]}}:
+					{{selected[3]}}:
+					{{selected[4]}}
+			</h6>
+			<input type="submit">
+		</form>
+	</div>
+	<script src="angular.js"></script>
+	<script src="selfselectcontroller.js"></script>
+</body>
+</html>

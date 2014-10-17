@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Enterprise</title>
+	<!--
+	<style>
+		.ui-top-progress{
+			position: absolute;
+			top : 0;
+			left : 0;
+			height : 5px;
+			background: blue;
+			transition:width 1s;
+			-moz-transition:width 1s; /* Firefox 4 */
+			-webkit-transition:width 1s; /* Safari and Chrome */
+			-o-transition:width 1s; /* Opera */
+		}
+	</style>
+-->
+</head>
+<body>
+	<!--
+	<div class="ui-top-progress"></div>
+-->
+	<div ng-app="enterprise">
+		<ul class="ui-menu" ng-controller="MenuCtrl">
+			<li ng-repeat="menu in menus">
+				<a href="{{menu.url}}">{{menu.name}}</a>
+			</li>
+		</ul>
+	
+	</div>
+	<script>
+		(function(){
+			var div_node = document.createElement("div"),
+				body_node = document.getElementsByTagName("body")[0];
+			
+			div_node.setAttribute("class", "ui-top-progress")
+			body_node.appendChild(div_node)
+			
+			div_node.setAttribute("style" , "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:5%;")
+
+			var old_onload = window.onload
+			
+			window.onload = function(){
+				
+				div_node.setAttribute("style", "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:100%;")
+				
+				div_node.addEventListener( 'webkitTransitionEnd', function( event ) { 
+					body_node.removeChild(div_node) 
+				}, false )
+				
+				old_onload && old_onload()
+			}
+		})()
+
+	</script>
+	<script src="angular.js"></script>
+	<script>
+		var menus = [
+			{
+				id : 0,
+				name : "index",
+				url : "/"
+			},
+			{
+				id : 1,
+				name : "menu1",
+				url : "menu1"
+			},
+			{
+				id : 2,
+				name : "menu2",
+				url : "menu2"
+			},
+			{
+				id : 3,
+				name : "menu3",
+				url : "menu3"
+			},
+		]
+
+		var app = angular.module('enterprise', [])
+		app.controller("MenuCtrl", function($scope){
+			$scope.menus = menus
+		})
+
+	</script>
+</body>
+</html>

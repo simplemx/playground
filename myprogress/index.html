@@ -33,26 +33,61 @@
 	</div>
 	<script>
 		(function(){
-			var div_node = document.createElement("div"),
-				body_node = document.getElementsByTagName("body")[0];
-			
-			div_node.setAttribute("class", "ui-top-progress")
-			body_node.appendChild(div_node)
-			
-			div_node.setAttribute("style" , "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:5%;")
 
-			var old_onload = window.onload
-			
-			window.onload = function(){
+			var div_node = document.createElement("div"),
+				body_node = document.getElementsByTagName("body")[0],
+				startPosition = 5,
+				currentPosition = startPosition,
+				positionStep = 5,
+				endPosition = 100,
+				intervalFunc;
+
+			var startProgress = function() {
+				div_node.setAttribute("class", "ui-top-progress")
+				body_node.appendChild(div_node)
 				
-				div_node.setAttribute("style", "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:100%;")
+				div_node.setAttribute("style" , "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + startPosition + "%;")
+			}
+
+			var goOnProgress = function() {
+				console.log("fdfd")
+				if (currentPosition < 95) {
+					currentPosition += positionStep
+					div_node.setAttribute("style" , "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + currentPosition + "%;")
+				}
+			}
+
+			var finishProgress = function(){
+				clearInterval(intervalFunc)
+
+				div_node.setAttribute("style", "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + endPosition + "%;")
 				
 				div_node.addEventListener( 'webkitTransitionEnd', function( event ) { 
 					body_node.removeChild(div_node) 
 				}, false )
-				
+			}
+
+			startProgress()
+
+			var old_onload = window.onload
+			
+			window.onload = function(){
+				if (this.MyProgress.autoProgress) {
+					finishProgress()
+				} else {
+					intervalFunc = setInterval(goOnProgress, 1000)
+				}
+
 				old_onload && old_onload()
 			}
+
+			this.MyProgress = {
+				autoProgress : true,
+				start : startProgress,
+				goOn : goOnProgress,
+				finish : finishProgress	
+			}
+
 		})()
 
 	</script>
@@ -86,6 +121,11 @@
 			$scope.menus = menus
 		})
 
+		MyProgress.autoProgress = false
+		MyProgress.goOn()
+		setTimeout(function(){
+			MyProgress.finish()
+		},  10000)
 	</script>
 </body>
 </html>

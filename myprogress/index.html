@@ -36,17 +36,20 @@
 
 			var div_node = document.createElement("div"),
 				body_node = document.getElementsByTagName("body")[0],
-				startPosition = 5,
+				startPosition = 0,
 				currentPosition = startPosition,
 				positionStep = 5,
 				endPosition = 100,
-				intervalFunc;
+				intervalFunc,
+				autoProgress = true;
 
 			var startProgress = function() {
 				div_node.setAttribute("class", "ui-top-progress")
 				body_node.appendChild(div_node)
 				
 				div_node.setAttribute("style" , "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + startPosition + "%;")
+
+				intervalFunc = setInterval(goOnProgress, 1000)
 			}
 
 			var goOnProgress = function() {
@@ -67,25 +70,29 @@
 				}, false )
 			}
 
+			var configProgress = function(opts) {
+				if (opts && typeof(opts["autoProgress"]) !== "undefined") {
+					autoProgress = opts["autoProgress"]
+				}
+			} 
+
 			startProgress()
 
 			var old_onload = window.onload
 			
 			window.onload = function(){
-				if (this.MyProgress.autoProgress) {
+				if (autoProgress) {
 					finishProgress()
-				} else {
-					intervalFunc = setInterval(goOnProgress, 1000)
 				}
 
 				old_onload && old_onload()
 			}
 
 			this.MyProgress = {
-				autoProgress : true,
 				start : startProgress,
 				goOn : goOnProgress,
-				finish : finishProgress	
+				finish : finishProgress,
+				config : configProgress	
 			}
 
 		})()
@@ -121,11 +128,14 @@
 			$scope.menus = menus
 		})
 
-		MyProgress.autoProgress = false
-		MyProgress.goOn()
+		/*
+		MyProgress.config({
+			autoProgress : false
+		})
 		setTimeout(function(){
 			MyProgress.finish()
 		},  10000)
+*/
 	</script>
 </body>
 </html>

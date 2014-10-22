@@ -53,7 +53,6 @@
 			}
 
 			var goOnProgress = function() {
-				console.log("fdfd")
 				if (currentPosition < 95) {
 					currentPosition += positionStep
 					div_node.setAttribute("style" , "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + currentPosition + "%;")
@@ -65,9 +64,17 @@
 
 				div_node.setAttribute("style", "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + endPosition + "%;")
 				
-				div_node.addEventListener( 'webkitTransitionEnd', function( event ) { 
-					body_node.removeChild(div_node) 
-				}, false )
+				if (div_node.addEventListener) {
+					div_node.addEventListener( 'webkitTransitionEnd', function( event ) { 
+						body_node.removeChild(div_node) 
+					}, false )
+				} else if (div_node.attachEvent) {
+					// IE 9-
+					setTimeout(function(){
+						body_node.removeChild(div_node)
+					}, 1000)
+					
+				}
 			}
 
 			var configProgress = function(opts) {

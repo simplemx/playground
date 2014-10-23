@@ -32,81 +32,85 @@
 	
 	</div>
 	<script>
-		(function(){
+(function(){
 
-			var div_node,
-				body_node = document.getElementsByTagName("body")[0],
-				startPosition = 0,
-				currentPosition = startPosition,
-				positionStep = 5,
-				endPosition = 100,
-				intervalFunc,
-				autoProgress = true;
+    var div_node = document.createElement("div"),
+        body_node = document.getElementsByTagName("body")[0],
+        startPosition = 0,
+        currentPosition = startPosition,
+        positionStep = 5,
+        endPosition = 100,
+        intervalFunc,
+        autoProgress = true;
 
-			var startProgress = function() {
-				div_node = document.createElement("div")
-				currentPosition = startPosition
-				
-				div_node.setAttribute("class", "ui-top-progress")
-				body_node.appendChild(div_node)
-				
-				div_node.setAttribute("style" , "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + startPosition + "%;")
 
-				intervalFunc = setInterval(goOnProgress, 1000)
-			}
+    body_node.appendChild(div_node)
 
-			var goOnProgress = function() {
-				if (currentPosition < 95) {
-					currentPosition += positionStep
-					div_node.setAttribute("style" , "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + currentPosition + "%;")
-				}
-			}
+    var startProgress = function() {
+        currentPosition = startPosition
+        div_node.setAttribute("class", "ui-top-progress")
+        
+        div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + startPosition + "%;")
 
-			var finishProgress = function(){
-				clearInterval(intervalFunc)
+        intervalFunc = setInterval(goOnProgress, 1000)
+    }
 
-				div_node.setAttribute("style", "position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + endPosition + "%;")
-				
-				if (div_node.addEventListener) {
-					div_node.addEventListener( 'webkitTransitionEnd', function( event ) { 
-						body_node.removeChild(div_node) 
-					}, false )
-				} else if (div_node.attachEvent) {
-					// IE 9-
-					setTimeout(function(){
-						body_node.removeChild(div_node)
-					}, 1000)
-					
-				}
-			}
+    var goOnProgress = function() {
+        if (currentPosition < 95) {
+            currentPosition += positionStep
+            div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + currentPosition + "%;")
+        }
+    }
 
-			var configProgress = function(opts) {
-				if (opts && typeof(opts["autoProgress"]) !== "undefined") {
-					autoProgress = opts["autoProgress"]
-				}
-			} 
+    var finishProgress = function(){
+        clearInterval(intervalFunc)
 
-			startProgress()
+        div_node.setAttribute("style", "display : block;position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1.5s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + endPosition + "%;")
+        
+        if (div_node.addEventListener) {
+            div_node.addEventListener( 'webkitTransitionEnd', function( event ) { 
+                div_node.setAttribute("style", "display:none;")
+            }, false )
+        } else if (div_node.attachEvent) {
+            // IE 9-
+            setTimeout(function(){
+                div_node.setAttribute("style", "display : none;")
+            }, 1000)
+            
+        }
+    }
 
-			var old_onload = window.onload
-			
-			window.onload = function(){
-				if (autoProgress) {
-					finishProgress()
-				}
+    var configProgress = function(opts) {
+        if (opts && typeof(opts["autoProgress"]) !== "undefined") {
+            autoProgress = opts["autoProgress"]
+        }
+    } 
 
-				old_onload && old_onload()
-			}
+    var stopProgress = function() {
+        clearInterval(intervalFunc)
+    }
 
-			this.MyProgress = {
-				start : startProgress,
-				goOn : goOnProgress,
-				finish : finishProgress,
-				config : configProgress	
-			}
+    startProgress()
 
-		})()
+    var old_onload = window.onload
+    
+    window.onload = function(){
+        if (autoProgress) {
+            finishProgress()
+        }
 
+        old_onload && old_onload()
+    }
+
+    this.MyProgress = {
+        start : startProgress,
+        goOn : goOnProgress,
+        finish : finishProgress,
+        config : configProgress,
+        stop : stopProgress
+    }
+
+})()
 	</script>
 	<script src="angular.js"></script>
 	<script>

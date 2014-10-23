@@ -34,7 +34,7 @@
 	<script>
 		(function(){
 
-			var div_node = document.createElement("div"),
+			var div_node,
 				body_node = document.getElementsByTagName("body")[0],
 				startPosition = 0,
 				currentPosition = startPosition,
@@ -44,6 +44,9 @@
 				autoProgress = true;
 
 			var startProgress = function() {
+				div_node = document.createElement("div")
+				currentPosition = startPosition
+				
 				div_node.setAttribute("class", "ui-top-progress")
 				body_node.appendChild(div_node)
 				

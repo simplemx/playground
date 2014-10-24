@@ -3,26 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Enterprise</title>
-	<!--
-	<style>
-		.ui-top-progress{
-			position: absolute;
-			top : 0;
-			left : 0;
-			height : 5px;
-			background: blue;
-			transition:width 1s;
-			-moz-transition:width 1s; /* Firefox 4 */
-			-webkit-transition:width 1s; /* Safari and Chrome */
-			-o-transition:width 1s; /* Opera */
-		}
-	</style>
--->
 </head>
 <body>
-	<!--
-	<div class="ui-top-progress"></div>
--->
 	<div ng-app="enterprise">
 		<ul class="ui-menu" ng-controller="MenuCtrl">
 			<li ng-repeat="menu in menus">
@@ -41,7 +23,10 @@
         positionStep = 5,
         endPosition = 100,
         intervalFunc,
-        autoProgress = true;
+        progressOpts = {
+            autoProgress : true,
+            color : "blue"
+        };
 
 
     body_node.appendChild(div_node)
@@ -50,7 +35,7 @@
         currentPosition = startPosition
         div_node.setAttribute("class", "ui-top-progress")
         
-        div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + startPosition + "%;")
+        div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: " + progressOpts.color + ";transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + startPosition + "%;")
 
         intervalFunc = setInterval(goOnProgress, 1000)
     }
@@ -58,14 +43,14 @@
     var goOnProgress = function() {
         if (currentPosition < 95) {
             currentPosition += positionStep
-            div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + currentPosition + "%;")
+            div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: " + progressOpts.color + ";transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + currentPosition + "%;")
         }
     }
 
     var finishProgress = function(){
         clearInterval(intervalFunc)
 
-        div_node.setAttribute("style", "display : block;position: absolute;top : 0;left : 0;height : 5px;background: blue;transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1.5s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + endPosition + "%;")
+        div_node.setAttribute("style", "display : block;position: absolute;top : 0;left : 0;height : 5px;background: " + progressOpts.color + ";transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1.5s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + endPosition + "%;")
         
         if (div_node.addEventListener) {
             div_node.addEventListener( 'webkitTransitionEnd', function( event ) { 
@@ -81,8 +66,18 @@
     }
 
     var configProgress = function(opts) {
-        if (opts && typeof(opts["autoProgress"]) !== "undefined") {
-            autoProgress = opts["autoProgress"]
+        var isArgumentValid = function(opts, field) {
+            if (opts && typeof(opts[field]) !== "undefined") {
+                return true;
+            }
+            return false;
+        }
+
+        if (isArgumentValid(opts, "autoProgress")) {
+            progressOpts.autoProgress = opts["autoProgress"]
+        }
+        if (isArgumentValid(opts, "color")) {
+            progressOpts.color = opts["color"]
         }
     } 
 
@@ -95,7 +90,7 @@
     var old_onload = window.onload
     
     window.onload = function(){
-        if (autoProgress) {
+        if (progressOpts.autoProgress) {
             finishProgress()
         }
 
@@ -144,7 +139,7 @@
 
 		/*
 		MyProgress.config({
-			autoProgress : false
+            color : "green"
 		})
 		setTimeout(function(){
 			MyProgress.finish()

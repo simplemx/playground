@@ -35,7 +35,7 @@
         currentPosition = startPosition
         div_node.setAttribute("class", "ui-top-progress")
         
-        div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: " + progressOpts.color + ";transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + startPosition + "%;")
+        div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: " + progressOpts.color + ";box-shadow:0 0 4px 4px " + progressOpts.color + ";transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + startPosition + "%;")
 
         intervalFunc = setInterval(goOnProgress, 1000)
     }
@@ -43,14 +43,14 @@
     var goOnProgress = function() {
         if (currentPosition < 95) {
             currentPosition += positionStep
-            div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: " + progressOpts.color + ";transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + currentPosition + "%;")
+            div_node.setAttribute("style" , "display : block;position: absolute;top : 0;left : 0;height : 5px;background: " + progressOpts.color + ";box-shadow:0 0 4px 4px " + progressOpts.color + ";transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + currentPosition + "%;")
         }
     }
 
     var finishProgress = function(){
         clearInterval(intervalFunc)
 
-        div_node.setAttribute("style", "display : block;position: absolute;top : 0;left : 0;height : 5px;background: " + progressOpts.color + ";transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1.5s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + endPosition + "%;")
+        div_node.setAttribute("style", "display : block;position: absolute;top : 0;left : 0;height : 5px;background: " + progressOpts.color + ";box-shadow:0 0 4px 4px " + progressOpts.color + ";transition:width 1s;-moz-transition:width 1s; /* Firefox 4 */-webkit-transition:width 1.5s; /* Safari and Chrome */-o-transition:width 1s; /* Opera */-webkit-transition-timing-function :ease ;width:" + endPosition + "%;")
         
         if (div_node.addEventListener) {
             div_node.addEventListener( 'webkitTransitionEnd', function( event ) { 
@@ -137,14 +137,15 @@
 			$scope.menus = menus
 		})
 
-		/*
+		
 		MyProgress.config({
             color : "green"
 		})
-		setTimeout(function(){
-			MyProgress.finish()
-		},  10000)
-*/
+
+		//setTimeout(function(){
+		//	MyProgress.finish()
+		//},  10000)
+
 	</script>
 </body>
 </html>

@@ -1,0 +1,29 @@
+/*
+blue #40BEA8
+pink #FE958F
+*/
+html{
+    height : 100%;
+}
+body {
+    background-color: #40BEA8;
+    height : 100%;
+}
+.page {
+    width : 100%;
+    height : 2000px;
+
+}
+.page .title {
+    position: fixed;
+    top : 0;
+    left: 0;
+    width : 100px;
+    height : 100px;
+    background-color: #FE958F
+}
+.page .content {
+    position: fixed;
+    top : 100px;
+    left : 300px;
+}

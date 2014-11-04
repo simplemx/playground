@@ -1,0 +1,86 @@
+header{
+    background-color:  #1f1f1f;
+}
+header {
+    height : 60px;
+}
+header h3{
+    color : #7ad4e2;
+}
+
+.ui-flot-container {
+  box-sizing: border-box;
+  width : 100%;
+  height : 300px;
+  padding: 20px 15px 15px 15px; 
+  margin: 15px auto 0 auto;
+}
+#ui-line-chart-placeholder, #ui-pie-chart-placeholder{
+  width : 100%;
+  height : 100%;
+}
+
+form select.form-control {
+  color : #adafae;
+  background-color: #4d4d4d;
+  border : 1px solid #666;
+  height : 20px;
+  line-height: 20px;
+  padding : 1px 6px;
+}
+
+form .form-group .ui-group-by-cond {
+  display : inline-block;
+  background-color : #4d4d4d;
+  padding : 5px;
+  margin-bottom : 5px;
+  margin-right : 5px;
+}
+form .ui-group-by-container .btn, h5 .btn{
+  background-color: transparent;
+  color : #adafae;
+  font-size : 20px;
+  padding : 0 5px 5px;
+}
+.modal {
+  display : block;
+}
+.modal h4, .modal label {
+  color : #333;
+}
+.modal input[type=text]{
+  background-color: transparent;
+}
+.ui-panel {
+  background-color: #1f1f1f;
+  margin : 10px 0 0;
+  padding : 10px;
+  border-radius: 5px;
+  color : #fff;
+}
+body h5{
+  margin : 0;
+}
+.row .no-padding{
+  padding-left : 0;
+}
+
+#flotTip {
+  background-color: #1f1f1f;
+  padding : 3px;
+}
+.legendLabel {
+  color : #fff;
+}
+
+.ui-type-color {
+  width:10px;
+  height:10px;
+  border:1px solid white;
+  background-color : rgb(237,194,64);
+  overflow:hidden;
+  display: inline-block;
+}
+#ui-line-chart-legend-placeholder ul li{
+  list-style: none;
+}

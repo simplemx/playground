@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html ng-controller="DashboardCtrl" lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>
+Demo {{dashboard.title ? " - "+dashboard.title : ""}}
+</title>
+<link rel="stylesheet" href="css/normalize.min.css">
+<link rel="stylesheet" href="vendor/angularjsmultiselect/angular-multi-select.css">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/animate.min.css">
+<link rel="stylesheet" href="css/app.css">
+<script data-main="app/require-config" src="vendor/requirejs/require.js">
+</script>
+
+<body>
+<script src="vendor/myprogress/myprogress.js"></script>
+<noscript>
+    <div class="container">
+        <center>
+            <h5>
+                You must enable javascript to see this demo
+            </h5>
+        </center>
+    </div>
+</noscript>
+<link rel="stylesheet" ng-href="css/bootstrap.{{dashboard.style||'dark'}}.min.css">
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<header>
+    <div class="container">
+        <center>
+            <h3>
+                Just another Kibana
+            </h3>
+        </center>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-2">
+            <div class="ui-panel">
+                <ul class="nav bs-docs-sidenav">
+                    <li ng-repeat="dashboard in dashboards" class="active">
+                        <a>
+                            {{dashboard.title}}
+                        </a>
+                        <ul class="nav">
+                            <li ng-repeat="cond in dashboard.condictions" class="">
+                                <a>
+                                    {{cond.name}}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-10">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="ui-panel">
+                    <h5>
+                        查询条件
+                        <button type="button"  ng-if="!condiction.isShow" class="btn btn-default" ng-click="condiction.isShow=true">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </button>
+                        <button type="button" ng-if="condiction.isShow" class="btn btn-default" ng-click="condiction.isShow=false">
+                            <span class="glyphicon glyphicon-chevron-up"></span>
+                        </button>
+                    </h5>
+
+                    <form class="form-horizontal" ng-if="condiction.isShow" name="searchForm" role="form" ng-submit="search()">
+                        
+                        <div class="form-group">
+                            <label class="col-xs-2" for="filterParam">
+                                Filter条件
+                            </label>
+                            <div class="col-xs-10">
+                                <input name="filterParam" placeholder="请输入filter条件" class="form-control" type="text" ng-model="condiction.filterParam">
+                            </div>
+                        </div>
+                        <div class="form-group ui-group-by-container">
+                            <label class="col-xs-2" for="groupByParam">
+                                Group By条件
+                            </label>
+                            <div class="col-xs-10">
+                                <div ng-repeat="groupBy in condiction.groupByParam" class="ui-group-by-cond">
+                                    <span ng-if="!groupBy.isNew">
+                                        field: {{groupBy.field}}
+                                        <button type="button" class="btn btn-default" ng-click="removeGroupBy($index)">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </span>
+                                    <span ng-if="groupBy.isNew">
+                                        field:
+                                        <input type="text" ng-model="groupBy.field">
+                                        <button type="button" class="btn btn-default" ng-click="commitAddGroupBy($index)">
+                                            <span class="glyphicon glyphicon-ok"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-default" ng-click="removeGroupBy($index)">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </span>
+                                    
+                                    
+                                </div>
+                                <button type="button" class="btn btn-default" ng-click="addGroupBy()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2" for="timeRangeField">
+                                范围标识字段
+                            </label>
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" name="timeRangeField" ng-model="condiction.timeRangeField">
+                            </div>
+                            <label class="col-xs-2" for="timeRangeParam">
+                                查询范围
+                            </label>
+                            <div class="col-xs-2">
+                                <select class="form-control" ng-model="condiction.timeRangeParam" name="timeRangeParam" >
+                                    <option value="-30m">
+                                        最近30分钟
+                                    </option>
+                                    <option value="-1h">
+                                        最近1小时
+                                    </option>
+                                    <option  value="-2h">
+                                        最近2小时
+                                    </option>
+                                    <option value="-6h" selected="selected">
+                                        最近6小时
+                                    </option>
+                                    <option value="-12h">
+                                        最近12小时
+                                    </option>
+                                    <option value="-1d">
+                                        最近一天
+                                    </option>
+                                </select>
+                            </div>
+                            <label class="col-xs-4 checkbox">
+                                <input ng-model="condiction.isTimeRangeGroupBy" checked="checked" type="checkbox"></input>
+                                使用范围作为GroupBy条件
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2" for="metricTypeParam">
+                                统计字段
+                            </label>
+                            <div class="col-xs-3">
+                                <input type="text" name="metricTypeField" placeholder="请输入统计的字段" ng-model="condiction.metricTypeField">
+                            </div>
+                            <label class="col-xs-2" for="metricTypeParam">
+                                统计方式
+                            </label>
+                            <div class="col-xs-5">
+                                <select class="form-control" ng-model="condiction.metricTypeParam" name="metricTypeParam" >
+                                    <option value="disabled" selected="selected">无</option>
+                                    <option value="avg">AVG</option>
+                                    <option value="max">MAX</option>
+                                    <option value="min">MIN</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2">
+                                展示方式
+                            </label>
+                            <div class="col-xs-10">
+                                <input ng-model="condiction.chartShowType" type="radio" name="chartShowType" value="line" checked>
+                                line charts
+                                <input ng-model="condiction.chartShowType" type="radio" name="chartShowType" value="bar">
+                                bar charts
+                            </div>
+                        </div>                   
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary" ng-disabled="searchForm.$invalid">
+                                    查询  <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                                <button type="button" class="btn btn-default" ng-click="resetQueryParam()">
+                                    重置条件  <span class="glyphicon glyphicon-repeat"></span>
+                                </button>
+                                <button type="button" class="btn btn-default" ng-click="modalDialog.isSaveParamShow=true;">
+                                    保存查询条件 <span class="glyphicon glyphicon-save"></span>
+                                </button>
+                                <button class="btn btn-default" type="button" ng-click="modalDialog.isQueryParamShow=true;">
+                                    当前请求参数 <span class="glyphicon glyphicon-info-sign"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+
+                <div class="col-xs-8">
+                    <div class="ui-panel">
+                        <h5>结果柱状/线状图</h5>
+                        <div class="ui-flot-container">
+                            <div id="ui-line-chart-placeholder">
+                            </div>
+                            
+                        </div>
+                        <div id="ui-line-chart-legend-placeholder">
+                            <ul>
+                                <li ng-repeat="data in lineChartPlotData">
+                                    <div class="ui-type-color" style="background-color:{{data.color}};"></div>
+                                    {{data.label}}
+                                    <input type="checkbox" ng-model="data.checked">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 no-padding">
+                    <div class="ui-panel">
+                        <h5>结果饼图</h5>
+                        <div class="ui-flot-container">
+                            <div id="ui-pie-chart-placeholder">
+                            </div>
+                            
+                        </div>
+                        <div id="ui-pie-chart-legend-placeholder">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="ui-panel">
+                        <div class="table-responsive">
+                            <h5>统计详情</h5>
+                            <table class="table table-condensed table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>type</th>
+                                        <th>sum</th>
+                                        <th>max</th>
+                                        <th>min</th>
+                                        <th>avg</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="type in lineChartData">
+                                        <td>{{type.label}}</td>
+                                        <td>{{type.sum}}</td>
+                                        <td>{{type.max}}</td>
+                                        <td>{{type.min}}</td>
+                                        <td>{{type.avg}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="ui-panel">
+                    <h5>结果集</h5>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        datefield
+                                    </th>
+                                    <th>
+                                        event type
+                                    </th>
+                                    <th>
+                                        logCategory
+                                    </th>
+                                    <th>
+                                        host
+                                    </th>
+                                    <th>
+                                        message
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="log in logs">
+                                    <td>
+                                        {{log._source["datefield"]}}
+                                    </td>
+                                    <td>
+                                        {{log._source.logLevel}}
+                                    </td>
+                                    <td>
+                                        {{log._source.logCategory}}
+                                    </td>
+                                    <td>
+                                        {{log._source.host}}
+                                    </td>
+                                    <td>
+                                        {{log._source.message.substring(0, 130)}}
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                        <ul class="pager">
+                          <li class="previous" ng-if="condiction.pageParam.previousShow"><a ng-click="gotoPreviousPage()">&larr; 上一页</a></li>
+                          <li class="next" ng-if="condiction.pageParam.nextShow"><a ng-click="gotoNextPage()">下一页 &rarr;</a></li>
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg in" ng-if="modalDialog.isQueryParamShow" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+             
+                <button type="button" class="close" data-dismiss="modal" ng-click="modalDialog.isQueryParamShow=false">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                    <span class="sr-only">
+                        Close
+                    </span>
+                </button>
+                <h4 class="modal-title" id="myLargeModalLabel">
+                    查询参数
+                </h4>
+            </div>
+            <div class="modal-body">
+                <pre>{{dashboard.elasticSearchQueryParam | json}}</pre>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<div class="modal fade bs-example-modal-lg in" ng-if="modalDialog.isSaveParamShow" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+             
+                <button type="button" class="close" data-dismiss="modal" ng-click="modalDialog.isSaveParamShow=false">
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                    <span class="sr-only">
+                        Close
+                    </span>
+                </button>
+                <h4 class="modal-title" id="myLargeModalLabel">
+                    保存查询条件
+                </h4>
+            </div>
+            <div class="modal-body">
+                <pre>{{dashboard.condiction | json}}</pre>
+                <form  class="form-horizontal" name="saveQueryParamForm" role="form" ng-submit="saveQueryParam()">
+                    <div class="form-group">
+                        <label class="col-xs-2" for="paramName">
+                            条件名字
+                        </label>
+                        <div class="col-xs-10">
+                            <input name="paramName" placeholder="请输入条件名字" required class="form-control" type="text" ng-model="dashboard.condiction.name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-primary" ng-disabled="saveQueryParamForm.$invalid">
+                                保存  <span class="glyphicon glyphicon-save"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script>
+    //for debug
+    var jsonhtml = function(obj){
+        console.log(JSON.stringify(obj, null, 4))
+    }
+</script>
+</body>
+</html>

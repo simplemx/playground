@@ -18,5 +18,14 @@
 * The exact character count is difficult to predict because of the way different browser software and different operating systems display type sizes. In conventional print layout columns of 30 to 40 characters per line are considered ideal, but this seems too sparse to our eyes for Web page layout
 
 
-## Five simple steps to better typography - Part 5
+## Five simple steps to better typography
 
+#### Measure the Measure
+
+* A general good rule of thumb is 2-3 alphabets in length, or 52-78 characters (including spaces). This is for legibility purposes. Keep your Measure within these guidelines and you should have no problem with legibility
+
+* Small Measure, less leading. Wide Measure, more leading
+
+* eg white text on black, make sure you increase the leading, tracking and decrease your font-weight. This applies to all widths of Measure
+
+* The general rule of thumb in tracking your words (not the characters) is that the shorter the line length the tighter the tracking, the opposite is also true.

@@ -29,3 +29,7 @@
 * eg white text on black, make sure you increase the leading, tracking and decrease your font-weight. This applies to all widths of Measure
 
 * The general rule of thumb in tracking your words (not the characters) is that the shorter the line length the tighter the tracking, the opposite is also true.
+
+#### Hanging Punctuation
+
+Hang lists and hang quotation marks, when using pull quotes and quotes within a body of text.

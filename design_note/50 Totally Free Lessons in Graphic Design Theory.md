@@ -67,3 +67,14 @@ Hang lists and hang quotation marks, when using pull quotes and quotes within a 
 
 * The Golden Section is a ratio which is evident throughout the universe as the number Phi. You can use this ratio to good effect in design by making sure that elements of your grid conform to this ratio. 
 
+* Well designed grid systems can make your designs not only more beautiful and legible, but more usable
+
+* The canvas size for print design is determined by the media size - paper, signage, envelope, whatever. The canvas size for fixed grid design on the web is normally determined by the browser window size, which is in turn determined by the user’s screen resolution. These are not fixed. Therefore a designer should design to the minimum requirement, which is normally the average screen resolution for the majority of users
+
+* Gutters are the gaps in between columns.Generally the columns we create, using Web Standards, are ‘divs’ which are given widths and positioned and styled using CSS. So, ideally, if we’re creating these columns, we don’t want to be creating seperate ones for the gutters. We therefore deal with gutters as part of columns and they are implemented using padding, or creating margins, on elements positioned within them, or sometimes the column divs themselves
+
+* Fixed width designs are, well, just easier to produce. The designer has control over the measure, and therefore the legibility (until the user increases or decreases the font size that is).
+Flexible width designs scale to the user’s resolution, and therefore the browser window. There is less empty space, typically at the side of fixed width designs.
+
+
+

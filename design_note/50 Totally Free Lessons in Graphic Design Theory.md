@@ -76,5 +76,7 @@ Hang lists and hang quotation marks, when using pull quotes and quotes within a 
 * Fixed width designs are, well, just easier to produce. The designer has control over the measure, and therefore the legibility (until the user increases or decreases the font size that is).
 Flexible width designs scale to the user’s resolution, and therefore the browser window. There is less empty space, typically at the side of fixed width designs.
 
+* Grid systems can be constructed from ratios. Simple ratios such as 1:3, or 2:1 are called rational ratios. More complex ratios, such as those based on the Golden Section (1: 1.618) , are called irrational ratios.
+
 
 

@@ -79,4 +79,39 @@ Flexible width designs scale to the user’s resolution, and therefore the brows
 * Grid systems can be constructed from ratios. Simple ratios such as 1:3, or 2:1 are called rational ratios. More complex ratios, such as those based on the Golden Section (1: 1.618) , are called irrational ratios.
 
 
+#### Grids: Order Out of Chaos
+
+* A grid is an invisible structure used to guide the placement of elements on your page. Grids don't appear on the printed piece but their influence may be evident in the widths of column texts, the uniformity of space around photographs, or the consistent placement of repeating elements from page to page in a magazine. They are a series of guidelines that determine the margins of the piece, space between page elements (headlines, body text, photographs, etc.), and let you know where to put things on the blank page.
+
+* There are many ways to establish visual unity throughout a series of related pieces. You probably use your logo on all your marketing pieces. You may have color coded brochures for different aspects of your business. Grids are another way to bring unity and cohesiveness to a collection of brochures, sales sheets, display ads, spec sheets, and other elements of your marketing arsenal.
+
+* Grids have been accused of creating boring, static designs. It's not the fault of the grid. Used properly, grids can offer a variety of creative design options. 
+
+* There are no right or wrong grids, simply grids that are more suitable for different content and design objectives. Of course that doesn't help you much when you're staring at a blank page and a deadline. Here are some "thinking points" to help you plan your grid and your design.
+
+* Content or Page Elements.
+Is the publication heavy on text or heavy on graphics? Will there be many headlines, rules, illustrations, pull-quotes?
+
+* Text.
+Look at both amount of text and how it is broken down — long articles, lots of short articles, a mix of long and short articles. How many subheads? Will you use eyebrows, decks, initial caps, and other visual cues?
+
+* Photos and Illustrations.
+Are there similarities in the type of illustrations or size of photos? Can photos be grouped by size or type? Are there a lot of rectangular elements or many irregularly shaped elements?
+
+* Complexity.
+Generally the larger the number of grid units (and the smaller the individual units) the more design options are available. However, too many options can destroy the underlying unity that the grid provides.
+
+* Here are some guidelines
+
+Lots of text with few graphics — such as a book with long chapters and few or no illustrations — can use a simpler grid. 1 - 3 units, perhaps.
+A newsletter, brochure, or magazine with many photographs usually requires a grid with many smaller units to give more possiblities for placing and sizing the photographs.
+Newsletters, because they generally have more text, often use a columnar grid.
+1, 2, and 3 column grids are common. Each can accommodate lots of text, especially long articles.
+4 or more columns offer greater flexibility for publications with text, photos, and other graphic elements and a mix of long and short articles.
+Grids based on an even number of grid columns can suffer from too much symmetry if text and graphics are confined to individual or double grid columns throughout.
+Newsletter don't have to be tied to columnar grids. A newsletter consisting of mostly small articles or "news briefs" and photos could use a 6(2x3), 9(3x3), or 12(3x4) unit grid of rectangular or square units quite nicely.
+
+
+* Grids don't have to limit design.Grids can feel stifling. But they needn't be.
+
 
